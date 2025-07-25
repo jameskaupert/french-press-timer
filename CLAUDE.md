@@ -62,14 +62,12 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
 - ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
-- 🔄 Issue #4: Visual alerts and stage indicators (NEXT - basic flash implemented, needs enhancement)
+- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - enhanced with stage colors, urgency cues, and animated indicators)
 - 🔄 Issue #5: Settings page for customizable timing (READY - needs minutes:seconds precision)
 - 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
 
 **Key Methods Ready for Enhancement:**
-- `updateProgressCircle()` - Working but may need refinement for Issue #4
 - `saveSettings()` - Validation logic needs debugging (tests reveal issues)
-- Visual alert methods - Need enhancement beyond basic flash for Issue #4
 

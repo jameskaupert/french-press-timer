@@ -164,7 +164,7 @@ describe('FrenchPressTimer', () => {
       timer.updateDisplay();
       
       expect(timer.stageTitle.textContent).toBe('Ready to Start');
-      expect(timer.stageDescription.textContent).toBe('Press start to begin brewing');
+      expect(timer.stageDescription.textContent).toBe('Press "Start Brewing" to begin');
     });
 
     test.skip('should format time display correctly [Issue #2 - UI Design]', () => {
