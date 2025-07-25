@@ -1,6 +1,6 @@
 const FrenchPressTimer = require('../script.js');
 
-describe.skip('FrenchPressTimer Settings [Issues #7 & #8 - Settings & localStorage]', () => {
+describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]', () => {
   let timer;
 
   beforeEach(() => {
