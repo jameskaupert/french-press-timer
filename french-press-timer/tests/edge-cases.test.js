@@ -1,6 +1,6 @@
 const FrenchPressTimer = require('../script.js');
 
-describe.skip('FrenchPressTimer Edge Cases [Issues #3-10 - Future functionality]', () => {
+describe.skip('FrenchPressTimer Edge Cases [Issues #4,7,8 - Future functionality]', () => {
   let timer;
 
   beforeEach(() => {

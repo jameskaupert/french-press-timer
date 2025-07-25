@@ -51,27 +51,29 @@ The project uses Jest with jsdom for testing core functionality. Tests are organ
 - **Watch mode:** `npm run test:watch --prefix french-press-timer`
 
 Tests are disabled/enabled per GitHub issue to avoid noise from unimplemented features:
-- Issue #2 (Basic structure): ✅ Active
-- Issues #3-10 (Future features): 🚫 Skipped until implementation
+- Issues #1-2 (Core timer and UI): ✅ Active
+- Issues #3-8 (Future features): 🚫 Skipped until implementation
 
 To enable tests for a specific issue, remove `.skip` from the relevant `describe.skip()` blocks.
 
 ## Development Notes
 
 **Issue Status:**
-- ✅ Issue #2: Basic HTML structure and file organization (COMPLETE)
-- 🔄 Issue #3: Core timer logic (READY - tests written but skipped)
-- 🔄 Issue #4: TV-friendly UI design (READY - basic structure implemented)
-- 🔄 Issue #5: Audio notifications (READY - placeholder in playNotification method)
-- 🔄 Issue #6: Visual alerts (READY - basic flash implemented)
-- 🔄 Issue #7: Settings functionality (READY - UI implemented, validation needs work)
-- 🔄 Issue #8: localStorage persistence (READY - basic structure implemented)
+- ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
+- ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
+- 🔄 Issue #3: Audio notifications for timer completion (NEXT - placeholder in playNotification method)
+- 🔄 Issue #4: Visual alerts and stage indicators (READY - basic flash implemented)
+- 🔄 Issue #5: Settings page for customizable timing (READY - UI implemented, validation needs work)
+- 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
+- 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
+- 🔄 Issue #8: Offline functionality optimization (READY)
 
 **Next Steps for Issue #3:**
-1. Enable timer countdown tests by removing `.skip` from `describe.skip('Timer State Management')`
-2. Enable timing logic tests by removing `.skip` from `describe.skip('Timer Countdown Logic')`
-3. Fix any timer interval management issues that tests reveal
-4. Ensure accurate countdown functionality with proper cleanup
+1. Implement audio file playback in `playNotification()` method
+2. Add audio notifications for steeping completion, brewing completion, and stir reminder
+3. Create configurable audio settings (volume, sound selection)
+4. Add graceful fallback when audio is unavailable/blocked
+5. Enable and update audio-related tests
 
 **Key Methods Ready for Enhancement:**
 - `playNotification()` - Currently just console.log, needs audio implementation

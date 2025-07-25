@@ -32,7 +32,7 @@ describe('FrenchPressTimer', () => {
       expect(timer.continueBtn).toBeTruthy();
     });
 
-    test.skip('should load settings from localStorage if available [Issue #8 - localStorage persistence]', () => {
+    test.skip('should load settings from localStorage if available [Issue #6 - localStorage persistence]', () => {
       const mockSettings = {
         steepTime: 300, // 5 minutes
         brewTime: 600   // 10 minutes
@@ -45,7 +45,7 @@ describe('FrenchPressTimer', () => {
       expect(timerWithSettings.state.settings.brewTime).toBe(600);
     });
 
-    test.skip('should handle localStorage errors gracefully [Issue #8 - localStorage persistence]', () => {
+    test.skip('should handle localStorage errors gracefully [Issue #6 - localStorage persistence]', () => {
       localStorage.getItem.mockImplementation(() => {
         throw new Error('localStorage error');
       });
@@ -58,7 +58,7 @@ describe('FrenchPressTimer', () => {
     });
   });
 
-  describe.skip('Timer State Management [Issue #3 - Core timer logic]', () => {
+  describe('Timer State Management [Issue #1 - Core timer logic]', () => {
     test('should start steeping timer correctly', () => {
       timer.startTimer();
       
@@ -113,7 +113,7 @@ describe('FrenchPressTimer', () => {
     });
   });
 
-  describe.skip('Timer Countdown Logic [Issue #3 - Core timer logic]', () => {
+  describe.skip('Timer Countdown Logic [Issue #1 - Core timer logic - needs investigation]', () => {
     beforeEach(() => {
       jest.useFakeTimers();
       jest.spyOn(timer, 'updateDisplay').mockImplementation(() => {});
@@ -167,21 +167,21 @@ describe('FrenchPressTimer', () => {
       expect(timer.stageDescription.textContent).toBe('Press start to begin brewing');
     });
 
-    test.skip('should format time display correctly [Issue #4 - UI Design]', () => {
+    test.skip('should format time display correctly [Issue #2 - UI Design]', () => {
       timer.state.timeRemaining = 125; // 2:05
       timer.updateDisplay();
       
       expect(timer.timeDisplay.textContent).toBe('2:05');
     });
 
-    test.skip('should format time display with leading zeros [Issue #4 - UI Design]', () => {
+    test.skip('should format time display with leading zeros [Issue #2 - UI Design]', () => {
       timer.state.timeRemaining = 65; // 1:05
       timer.updateDisplay();
       
       expect(timer.timeDisplay.textContent).toBe('1:05');
     });
 
-    test.skip('should show correct stage information for steeping [Issue #3 - Core timer logic]', () => {
+    test('should show correct stage information for steeping', () => {
       timer.state.currentStage = 'steeping';
       timer.updateDisplay();
       
@@ -189,7 +189,7 @@ describe('FrenchPressTimer', () => {
       expect(timer.stageDescription.textContent).toBe('Let the coffee steep...');
     });
 
-    test.skip('should show correct stage information for stir reminder [Issue #3 - Core timer logic]', () => {
+    test('should show correct stage information for stir reminder', () => {
       timer.state.currentStage = 'stir';
       timer.updateDisplay();
       
@@ -197,7 +197,7 @@ describe('FrenchPressTimer', () => {
       expect(timer.stageDescription.textContent).toBe('Give the coffee a gentle stir, then continue');
     });
 
-    test.skip('should show correct stage information for brewing [Issue #3 - Core timer logic]', () => {
+    test('should show correct stage information for brewing', () => {
       timer.state.currentStage = 'brewing';
       timer.updateDisplay();
       
@@ -205,7 +205,7 @@ describe('FrenchPressTimer', () => {
       expect(timer.stageDescription.textContent).toBe('Almost ready...');
     });
 
-    test.skip('should show correct stage information for complete [Issue #3 - Core timer logic]', () => {
+    test('should show correct stage information for complete', () => {
       timer.state.currentStage = 'complete';
       timer.updateDisplay();
       

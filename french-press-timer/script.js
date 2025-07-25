@@ -13,6 +13,14 @@ class FrenchPressTimer {
         };
 
         this.timerInterval = null;
+        this.audioContext = null;
+        
+        // Default settings
+        this.settings = {
+            audioEnabled: true,
+            audioVolume: 0.5
+        };
+        
         this.initializeElements();
         this.loadSettings();
         this.setupEventListeners();
@@ -37,6 +45,9 @@ class FrenchPressTimer {
         this.closeBtn = document.getElementById('closeBtn');
         this.firstTimerInput = document.getElementById('firstTimer');
         this.secondTimerInput = document.getElementById('secondTimer');
+        this.audioEnabledInput = document.getElementById('audioEnabled');
+        this.audioVolumeInput = document.getElementById('audioVolume');
+        this.volumeDisplay = document.getElementById('volumeDisplay');
         this.saveSettingsBtn = document.getElementById('saveSettings');
         this.resetDefaultsBtn = document.getElementById('resetDefaults');
 
@@ -64,6 +75,9 @@ class FrenchPressTimer {
         this.closeBtn.addEventListener('click', () => this.closeSettings());
         this.saveSettingsBtn.addEventListener('click', () => this.saveSettings());
         this.resetDefaultsBtn.addEventListener('click', () => this.resetToDefaults());
+        
+        // Audio settings
+        this.audioVolumeInput.addEventListener('input', () => this.updateVolumeDisplay());
 
         // Close modal when clicking outside
         this.settingsModal.addEventListener('click', (e) => {
@@ -80,6 +94,8 @@ class FrenchPressTimer {
                 const settings = JSON.parse(saved);
                 this.state.settings.steepTime = settings.steepTime || 4 * 60;
                 this.state.settings.brewTime = settings.brewTime || 8 * 60;
+                this.settings.audioEnabled = settings.audioEnabled !== undefined ? settings.audioEnabled : true;
+                this.settings.audioVolume = settings.audioVolume || 0.5;
             }
         } catch (error) {
             console.warn('Could not load settings from localStorage:', error);
@@ -90,7 +106,12 @@ class FrenchPressTimer {
 
     saveSettingsToStorage() {
         try {
-            localStorage.setItem('frenchPressSettings', JSON.stringify(this.state.settings));
+            const allSettings = {
+                ...this.state.settings,
+                audioEnabled: this.settings.audioEnabled,
+                audioVolume: this.settings.audioVolume
+            };
+            localStorage.setItem('frenchPressSettings', JSON.stringify(allSettings));
         } catch (error) {
             console.warn('Could not save settings to localStorage:', error);
         }
@@ -99,6 +120,14 @@ class FrenchPressTimer {
     updateSettingsDisplay() {
         this.firstTimerInput.value = Math.floor(this.state.settings.steepTime / 60);
         this.secondTimerInput.value = Math.floor(this.state.settings.brewTime / 60);
+        this.audioEnabledInput.checked = this.settings.audioEnabled;
+        this.audioVolumeInput.value = this.settings.audioVolume;
+        this.updateVolumeDisplay();
+    }
+
+    updateVolumeDisplay() {
+        const percentage = Math.round(this.audioVolumeInput.value * 100);
+        this.volumeDisplay.textContent = `${percentage}%`;
     }
 
     startTimer() {
@@ -132,17 +161,22 @@ class FrenchPressTimer {
         if (this.state.currentStage === 'steeping') {
             this.state.currentStage = 'stir';
             this.showStirReminder();
+            this.playNotification('steeping_complete');
         } else if (this.state.currentStage === 'brewing') {
             this.state.currentStage = 'complete';
             this.showComplete();
+            this.playNotification('brewing_complete');
         }
 
         this.updateDisplay();
-        this.playNotification();
     }
 
     showStirReminder() {
         this.continueBtn.style.display = 'inline-block';
+        // Play stir reminder notification after a brief delay
+        setTimeout(() => {
+            this.playNotification('stir_reminder');
+        }, 500);
     }
 
     continueToFinalBrewing() {
@@ -233,16 +267,81 @@ class FrenchPressTimer {
         }
     }
 
-    playNotification() {
-        // Placeholder for audio notification
-        // Will be implemented when audio assets are added
-        console.log('Timer complete notification');
+    playNotification(type = 'default') {
+        // Play audio notification
+        this.playAudioNotification(type);
         
         // Visual flash effect
         document.body.style.backgroundColor = '#4CAF50';
         setTimeout(() => {
             document.body.style.backgroundColor = '#1a1a1a';
         }, 200);
+    }
+
+    playAudioNotification(type = 'default') {
+        try {
+            // Check if audio is enabled in settings
+            if (!this.settings.audioEnabled) {
+                return;
+            }
+
+            // Create audio context if it doesn't exist
+            if (!this.audioContext) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Resume audio context if suspended (required for user interaction)
+            if (this.audioContext.state === 'suspended') {
+                this.audioContext.resume();
+            }
+
+            // Create different notification sounds based on type
+            switch (type) {
+                case 'steeping_complete':
+                    this.playBeepSequence([800, 600], [0.3, 0.3], 200);
+                    break;
+                case 'stir_reminder':
+                    this.playBeepSequence([400], [0.5], 0);
+                    break;
+                case 'brewing_complete':
+                    this.playBeepSequence([600, 800, 1000], [0.2, 0.2, 0.4], 150);
+                    break;
+                default:
+                    this.playBeepSequence([800], [0.3], 0);
+            }
+        } catch (error) {
+            console.warn('Audio notification failed:', error);
+            // Graceful fallback - audio is not critical to functionality
+        }
+    }
+
+    playBeepSequence(frequencies, durations, gaps) {
+        let currentTime = this.audioContext.currentTime;
+        
+        for (let i = 0; i < frequencies.length; i++) {
+            this.playBeep(frequencies[i], currentTime, durations[i]);
+            currentTime += durations[i] + (gaps / 1000);
+        }
+    }
+
+    playBeep(frequency, startTime, duration) {
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.type = 'sine';
+        
+        // Set volume based on settings
+        const volume = this.settings.audioVolume || 0.5;
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(volume, startTime + 0.01);
+        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
     }
 
     // Settings modal methods
@@ -262,6 +361,8 @@ class FrenchPressTimer {
         if (steepMinutes > 0 && steepMinutes <= 30 && brewMinutes > 0 && brewMinutes <= 30) {
             this.state.settings.steepTime = steepMinutes * 60;
             this.state.settings.brewTime = brewMinutes * 60;
+            this.settings.audioEnabled = this.audioEnabledInput.checked;
+            this.settings.audioVolume = parseFloat(this.audioVolumeInput.value);
             
             this.saveSettingsToStorage();
             this.closeSettings();
@@ -278,6 +379,8 @@ class FrenchPressTimer {
     resetToDefaults() {
         this.state.settings.steepTime = 4 * 60;
         this.state.settings.brewTime = 8 * 60;
+        this.settings.audioEnabled = true;
+        this.settings.audioVolume = 0.5;
         this.updateSettingsDisplay();
         this.saveSettingsToStorage();
         
