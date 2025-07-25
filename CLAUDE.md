@@ -62,11 +62,22 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
 - ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
-- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - enhanced with stage colors, urgency cues, and animated indicators)
+- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - commit 6c518bb pushed to GitHub)
 - 🔄 Issue #5: Settings page for customizable timing (READY - needs minutes:seconds precision)
 - 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
+
+**Issue #4 - Complete Implementation:**
+- Enhanced visual alerts with Kanagawa Paper Ink color palette
+- Self-hosted JetBrains Mono font (fonts/jetbrains-mono/)
+- Stage-specific colors and animations (green/yellow/blue/purple/red)
+- Progress circle urgency indicators (color changes, stroke width, pulse)
+- Centered "Coffee Timer" layout with flat SVG settings icon
+- Fixed form controls (checkbox/slider) to use Kanagawa palette
+- Comprehensive visual-alerts.test.js with 19 tests
+- Complete KANAGAWA_PALETTE.md documentation
+- Branch: issue-4-visual-alerts (commit 6c518bb) - pushed to GitHub, no PR created yet
 
 **Key Methods Ready for Enhancement:**
 - `saveSettings()` - Validation logic needs debugging (tests reveal issues)

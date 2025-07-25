@@ -70,26 +70,6 @@ header h1 {
     color: #DCD7BA; /* fujiWhite */
 }
 
-.settings-btn {
-    background: none;
-    border: 2px solid #6A9589; /* waveAqua1 */
-    color: #DCD7BA; /* fujiWhite */
-    font-size: 2rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.settings-btn:hover {
-    border-color: #7E9CD8; /* crystalBlue */
-    background-color: rgba(126, 156, 216, 0.1);
-}
 
 /* Timer display styles */
 .timer-display {
@@ -122,7 +102,7 @@ header h1 {
 }
 
 .stage-steeping h2 {
-    color: #DCA561; /* autumnYellow */
+    color: #658594; /* dragonBlue */
 }
 
 .stage-stir h2 {
@@ -182,6 +162,9 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    padding: 20px;
 }
 
 .time-display {
@@ -190,7 +173,9 @@ header h1 {
     color: #DCD7BA; /* fujiWhite */
     font-family: 'JetBrains Mono', 'Courier New', monospace;
     position: absolute;
+    transition: all 0.2s ease;
     z-index: 10;
+    pointer-events: none;
 }
 
 .progress-ring {
@@ -221,7 +206,7 @@ header h1 {
 }
 
 .stage-steeping .progress-ring-circle {
-    stroke: #DCA561; /* autumnYellow */
+    stroke: #658594; /* dragonBlue */
 }
 
 .stage-stir .progress-ring-circle {
@@ -265,12 +250,46 @@ header h1 {
     color: #DCD7BA; /* fujiWhite - always consistent */
 }
 
+/* Timer circle cursor and hover effects when clickable (idle/stir stages) */
+.stage-idle .timer-circle,
+.stage-stir .timer-circle {
+    cursor: pointer;
+}
+
+.stage-idle .timer-circle:hover,
+.stage-stir .timer-circle:hover {
+    transform: scale(1.02);
+}
+
+.stage-idle .timer-circle:hover .progress-ring-circle,
+.stage-stir .timer-circle:hover .progress-ring-circle {
+    stroke: #6A9589;
+}
+
 /* Controls styles */
 .controls {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-rows: 60px 60px 60px 60px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+}
+
+.controls #startBtn {
+    grid-row: 1;
+}
+
+.controls #continueBtn {
+    grid-row: 2;
+}
+
+.controls #settingsBtn {
+    grid-row: 3;
+}
+
+.controls #resetBtn {
+    grid-row: 4;
 }
 
 .btn {
@@ -352,7 +371,7 @@ header h1 {
 }
 
 .close-btn:hover {
-    color: #76946A; /* autumnGreen */
+    color: #6A9589; /* waveAqua1 - matches Save button hover */
 }
 
 .modal-body {
@@ -399,7 +418,7 @@ header h1 {
 .setting-group input[type="range"] {
     padding: 0;
     height: 8px;
-    background: #1F1F28; /* sumiInk3 */
+    background: #16161D; /* sumiInk0 - darker background for contrast */
     border: none;
     border-radius: 4px;
     outline: none;
@@ -436,7 +455,7 @@ header h1 {
 }
 
 .setting-group input[type="range"]::-moz-range-track {
-    background: #1F1F28; /* sumiInk3 */
+    background: #16161D; /* sumiInk0 - darker background for contrast */
     height: 8px;
     border-radius: 4px;
     border: none;

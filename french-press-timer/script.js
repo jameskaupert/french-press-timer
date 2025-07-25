@@ -79,6 +79,16 @@ class FrenchPressTimer {
         // Audio settings
         this.audioVolumeInput.addEventListener('input', () => this.updateVolumeDisplay());
 
+        // Make timer circle clickable to start
+        this.timerCircle = document.querySelector('.timer-circle');
+        this.timerCircle.addEventListener('click', () => {
+            if (this.state.currentStage === 'idle') {
+                this.startTimer();
+            } else if (this.state.currentStage === 'stir') {
+                this.continueToFinalBrewing();
+            }
+        });
+
         // Close modal when clicking outside
         this.settingsModal.addEventListener('click', (e) => {
             if (e.target === this.settingsModal) {
@@ -137,7 +147,6 @@ class FrenchPressTimer {
         this.state.isRunning = true;
 
         this.startBtn.style.display = 'none';
-        this.resetBtn.style.display = 'inline-block';
 
         this.runTimer();
         this.updateDisplay();
@@ -205,7 +214,6 @@ class FrenchPressTimer {
         this.state.isRunning = false;
 
         this.startBtn.style.display = 'inline-block';
-        this.resetBtn.style.display = 'none';
         this.continueBtn.style.display = 'none';
         this.resetBtn.textContent = 'Reset';
 
@@ -236,18 +244,16 @@ class FrenchPressTimer {
         
         // Only apply urgency indicators during active timer stages
         if (this.state.currentStage === 'steeping' || this.state.currentStage === 'brewing') {
-            const totalTime = this.state.totalTime;
             const remaining = this.state.timeRemaining;
-            const percentRemaining = (remaining / totalTime) * 100;
             
-            if (percentRemaining <= 10) {
-                // Last 10% of time - high urgency
+            if (remaining <= 10) {
+                // Last 10 seconds - high urgency
                 timerDisplay.classList.add('urgency-high');
-            } else if (percentRemaining <= 25) {
-                // Last 25% of time - medium urgency
+            } else if (remaining <= 30) {
+                // Last 30 seconds - medium urgency
                 timerDisplay.classList.add('urgency-medium');
             } else {
-                // More than 25% remaining - low urgency
+                // More than 30 seconds remaining - low urgency
                 timerDisplay.classList.add('urgency-low');
             }
         } else {
@@ -258,9 +264,11 @@ class FrenchPressTimer {
 
     updateStageDisplay() {
         const stageIndicator = document.querySelector('.stage-indicator');
+        const timerDisplay = document.querySelector('.timer-display');
         
-        // Remove all stage classes
+        // Remove all stage classes from both elements
         stageIndicator.classList.remove('stage-idle', 'stage-steeping', 'stage-stir', 'stage-brewing', 'stage-complete');
+        timerDisplay.classList.remove('stage-idle', 'stage-steeping', 'stage-stir', 'stage-brewing', 'stage-complete');
         
         switch (this.state.currentStage) {
             case 'idle':
@@ -268,28 +276,33 @@ class FrenchPressTimer {
                 this.stageDescription.textContent = 'Press "Start Brewing" to begin';
                 this.timeDisplay.textContent = `${Math.floor(this.state.settings.steepTime / 60)}:00`;
                 stageIndicator.classList.add('stage-idle');
+                timerDisplay.classList.add('stage-idle');
                 break;
             case 'steeping':
                 this.stageTitle.textContent = 'Steeping';
                 this.stageDescription.textContent = 'Let the coffee steep...';
                 stageIndicator.classList.add('stage-steeping');
+                timerDisplay.classList.add('stage-steeping');
                 break;
             case 'stir':
                 this.stageTitle.textContent = 'Stir Coffee';
                 this.stageDescription.textContent = 'Give the coffee a gentle stir, then continue';
                 this.timeDisplay.textContent = '0:00';
                 stageIndicator.classList.add('stage-stir');
+                timerDisplay.classList.add('stage-stir');
                 break;
             case 'brewing':
                 this.stageTitle.textContent = 'Final Brewing';
                 this.stageDescription.textContent = 'Almost ready...';
                 stageIndicator.classList.add('stage-brewing');
+                timerDisplay.classList.add('stage-brewing');
                 break;
             case 'complete':
                 this.stageTitle.textContent = 'Ready to Pour!';
                 this.stageDescription.textContent = 'Your coffee is ready to enjoy';
                 this.timeDisplay.textContent = '0:00';
                 stageIndicator.classList.add('stage-complete');
+                timerDisplay.classList.add('stage-complete');
                 break;
         }
     }

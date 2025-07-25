@@ -16,10 +16,11 @@ This document describes the color palette used in the French Press Timer applica
 
 ### Primary Accents
 - **autumnGreen**: `#76946A` - Primary actions, idle/complete states
-- **autumnYellow**: `#DCA561` - Steeping stage, medium urgency
+- **dragonBlue**: `#658594` - Steeping stage
 - **crystalBlue**: `#7E9CD8` - Stir stage, interactive hover states
 - **oniViolet**: `#957FB8` - Brewing stage, secondary hover states
 - **waveAqua1**: `#6A9589` - Borders, button hover states
+- **autumnYellow**: `#DCA561` - Timer urgency thresholds (30s warning)
 - **autumnRed**: `#C34043` - High urgency indicators
 
 ## Application Usage
@@ -28,7 +29,7 @@ This document describes the color palette used in the French Press Timer applica
 | Stage | Color | Hex Code | Usage |
 |-------|-------|----------|-------|
 | Idle | autumnGreen | `#76946A` | Stage title, progress circle |
-| Steeping | autumnYellow | `#DCA561` | Stage title, progress circle, flash alerts |
+| Steeping | dragonBlue | `#658594` | Stage title, progress circle |
 | Stir | crystalBlue | `#7E9CD8` | Stage title, progress circle, flash alerts (with pulse animation) |
 | Brewing | oniViolet | `#957FB8` | Stage title, progress circle |
 | Complete | autumnGreen | `#76946A` | Stage title, progress circle, flash alerts (with glow animation) |
@@ -69,8 +70,8 @@ This document describes the color palette used in the French Press Timer applica
 
 #### Urgency Indicators
 - **Low urgency**: Standard stage colors, normal stroke width (8px)
-- **Medium urgency**: Progress circle changes to autumnYellow (`#DCA561`) with thicker stroke (10px) and slow pulse
-- **High urgency**: Progress circle changes to autumnRed (`#C34043`) with thickest stroke (12px) and fast pulse
+- **Medium urgency**: Progress circle changes to autumnYellow (`#DCA561`) with thicker stroke (10px) and slow pulse (≤30s remaining)
+- **High urgency**: Progress circle changes to autumnRed (`#C34043`) with thickest stroke (12px) and fast pulse (≤10s remaining)
 - **Timer text**: Always maintains consistent fujiWhite (`#DCD7BA`) color regardless of urgency
 
 ### Visual Effects
