@@ -61,23 +61,15 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 **Issue Status:**
 - ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
-- 🔄 Issue #3: Audio notifications for timer completion (NEXT - placeholder in playNotification method)
-- 🔄 Issue #4: Visual alerts and stage indicators (READY - basic flash implemented)
-- 🔄 Issue #5: Settings page for customizable timing (READY - UI implemented, validation needs work)
+- ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
+- 🔄 Issue #4: Visual alerts and stage indicators (NEXT - basic flash implemented, needs enhancement)
+- 🔄 Issue #5: Settings page for customizable timing (READY - needs minutes:seconds precision)
 - 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
 
-**Next Steps for Issue #3:**
-1. Implement audio file playback in `playNotification()` method
-2. Add audio notifications for steeping completion, brewing completion, and stir reminder
-3. Create configurable audio settings (volume, sound selection)
-4. Add graceful fallback when audio is unavailable/blocked
-5. Enable and update audio-related tests
-
 **Key Methods Ready for Enhancement:**
-- `playNotification()` - Currently just console.log, needs audio implementation
-- `updateProgressCircle()` - Working but may need refinement
+- `updateProgressCircle()` - Working but may need refinement for Issue #4
 - `saveSettings()` - Validation logic needs debugging (tests reveal issues)
-- Timer state management methods are fully implemented and tested
+- Visual alert methods - Need enhancement beyond basic flash for Issue #4
 
