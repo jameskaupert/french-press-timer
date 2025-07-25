@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/local/bin/mise trust $(pwd)/mise.toml && /usr/local/bin/mise install
