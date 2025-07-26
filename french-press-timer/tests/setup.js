@@ -28,6 +28,10 @@ beforeEach(() => {
   localStorageMock.clear();
   localStorageMock.getItem.mockReturnValue(null);
   
+  // Ensure localStorage methods are fresh mocks for each test
+  localStorageMock.setItem.mockClear();
+  localStorageMock.getItem.mockClear();
+  
   // Set up basic DOM structure
   document.body.innerHTML = `
     <div class="container">
@@ -63,12 +67,22 @@ beforeEach(() => {
           </div>
           <div class="modal-body">
             <div class="setting-group">
-              <label for="firstTimer">Steeping Time (minutes):</label>
-              <input type="number" id="firstTimer" min="1" max="30" value="4">
+              <label for="firstTimer">Steeping Time:</label>
+              <div class="time-input-group">
+                <input type="number" id="firstTimerMinutes" min="0" max="30" value="4" class="time-input">
+                <span class="time-label">min</span>
+                <input type="number" id="firstTimerSeconds" min="0" max="59" value="0" class="time-input">
+                <span class="time-label">sec</span>
+              </div>
             </div>
             <div class="setting-group">
-              <label for="secondTimer">Final Brewing Time (minutes):</label>
-              <input type="number" id="secondTimer" min="1" max="30" value="8">
+              <label for="secondTimer">Final Brewing Time:</label>
+              <div class="time-input-group">
+                <input type="number" id="secondTimerMinutes" min="0" max="30" value="8" class="time-input">
+                <span class="time-label">min</span>
+                <input type="number" id="secondTimerSeconds" min="0" max="59" value="0" class="time-input">
+                <span class="time-label">sec</span>
+              </div>
             </div>
             <div class="setting-group">
               <label for="audioEnabled">
