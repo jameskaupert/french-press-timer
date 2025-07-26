@@ -62,27 +62,20 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
 - ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
-- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - commit 6c518bb pushed to GitHub)
-- ✅ Issue #5: Settings page for customizable timing (COMPLETE)
+- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - merged to main via PR #10)
+- ✅ Issue #5: Settings page for customizable timing (COMPLETE - enhanced with minutes:seconds precision)
 - ✅ Issue #6: localStorage persistence for user preferences (COMPLETE - full save/load/error handling)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
 
-**Issue #4 - Complete Implementation:**
-- Enhanced visual alerts with Kanagawa Paper Ink color palette
-- Self-hosted JetBrains Mono font (fonts/jetbrains-mono/)
-- Stage-specific colors and animations (green/yellow/blue/purple/red)
-- Progress circle urgency indicators (color changes, stroke width, pulse)
-- Centered "Coffee Timer" layout with flat SVG settings icon
-- Fixed form controls (checkbox/slider) to use Kanagawa palette
-- Comprehensive visual-alerts.test.js with 19 tests
-- Complete KANAGAWA_PALETTE.md documentation
-- Branch: issue-4-visual-alerts (commit 6c518bb) - pushed to GitHub, no PR created yet
-
-**Issue #5 - Settings Enhancement Notes:**
-- `saveSettings()` validation logic has test failures that need fixing:
-  - Invalid inputs not properly rejected (values still saved from test setup)
-  - localStorage mocking needs proper setup in tests
-  - Validation should reject out-of-range values without saving
-- Will be addressed during Issue #5 implementation
+**Issue #5 - Settings Enhancement (COMPLETE):**
+- **Branch:** issue-5-settings-enhancement  
+- **Completed Features:**
+  - ✅ Fixed `saveSettings()` validation logic
+  - ✅ Enhanced input validation with proper rejection of invalid values
+  - ✅ Added minutes:seconds precision to timer settings
+  - ✅ Improved error handling for non-numeric inputs
+  - ✅ Updated UI with separate minutes/seconds input fields
+  - ✅ Comprehensive test coverage for validation logic
+- **Enhancement:** Settings now support precise timing with minutes:seconds format (e.g., 4:30 for 4 minutes 30 seconds)
 

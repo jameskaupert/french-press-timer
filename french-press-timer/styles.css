@@ -527,6 +527,27 @@ header h1 {
     border: none;
 }
 
+/* Time input groups */
+.time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.time-input {
+    width: 80px !important;
+    padding: 0.5rem !important;
+    text-align: center;
+}
+
+.time-label {
+    font-size: 1rem;
+    color: #C8C093; /* oldWhite */
+    font-weight: 500;
+    min-width: 2rem;
+}
+
 .modal-footer {
     display: flex;
     gap: 1rem;
