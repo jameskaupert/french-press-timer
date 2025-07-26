@@ -79,6 +79,16 @@ class FrenchPressTimer {
         // Audio settings
         this.audioVolumeInput.addEventListener('input', () => this.updateVolumeDisplay());
 
+        // Make timer circle clickable to start
+        this.timerCircle = document.querySelector('.timer-circle');
+        this.timerCircle.addEventListener('click', () => {
+            if (this.state.currentStage === 'idle') {
+                this.startTimer();
+            } else if (this.state.currentStage === 'stir') {
+                this.continueToFinalBrewing();
+            }
+        });
+
         // Close modal when clicking outside
         this.settingsModal.addEventListener('click', (e) => {
             if (e.target === this.settingsModal) {
@@ -137,7 +147,6 @@ class FrenchPressTimer {
         this.state.isRunning = true;
 
         this.startBtn.style.display = 'none';
-        this.resetBtn.style.display = 'inline-block';
 
         this.runTimer();
         this.updateDisplay();
@@ -205,7 +214,6 @@ class FrenchPressTimer {
         this.state.isRunning = false;
 
         this.startBtn.style.display = 'inline-block';
-        this.resetBtn.style.display = 'none';
         this.continueBtn.style.display = 'none';
         this.resetBtn.textContent = 'Reset';
 
@@ -223,32 +231,78 @@ class FrenchPressTimer {
 
         // Update progress circle
         this.updateProgressCircle();
+
+        // Update urgency indicators
+        this.updateUrgencyIndicators();
+    }
+
+    updateUrgencyIndicators() {
+        const timerDisplay = document.querySelector('.timer-display');
+        
+        // Remove existing urgency classes
+        timerDisplay.classList.remove('urgency-low', 'urgency-medium', 'urgency-high');
+        
+        // Only apply urgency indicators during active timer stages
+        if (this.state.currentStage === 'steeping' || this.state.currentStage === 'brewing') {
+            const remaining = this.state.timeRemaining;
+            
+            if (remaining <= 10) {
+                // Last 10 seconds - high urgency
+                timerDisplay.classList.add('urgency-high');
+            } else if (remaining <= 30) {
+                // Last 30 seconds - medium urgency
+                timerDisplay.classList.add('urgency-medium');
+            } else {
+                // More than 30 seconds remaining - low urgency
+                timerDisplay.classList.add('urgency-low');
+            }
+        } else {
+            // Default state for idle, stir, and complete stages
+            timerDisplay.classList.add('urgency-low');
+        }
     }
 
     updateStageDisplay() {
+        const stageIndicator = document.querySelector('.stage-indicator');
+        const timerDisplay = document.querySelector('.timer-display');
+        
+        // Remove all stage classes from both elements
+        stageIndicator.classList.remove('stage-idle', 'stage-steeping', 'stage-stir', 'stage-brewing', 'stage-complete');
+        timerDisplay.classList.remove('stage-idle', 'stage-steeping', 'stage-stir', 'stage-brewing', 'stage-complete');
+        
         switch (this.state.currentStage) {
             case 'idle':
                 this.stageTitle.textContent = 'Ready to Start';
-                this.stageDescription.textContent = 'Press start to begin brewing';
+                this.stageDescription.textContent = 'Press "Start Brewing" to begin';
                 this.timeDisplay.textContent = `${Math.floor(this.state.settings.steepTime / 60)}:00`;
+                stageIndicator.classList.add('stage-idle');
+                timerDisplay.classList.add('stage-idle');
                 break;
             case 'steeping':
                 this.stageTitle.textContent = 'Steeping';
                 this.stageDescription.textContent = 'Let the coffee steep...';
+                stageIndicator.classList.add('stage-steeping');
+                timerDisplay.classList.add('stage-steeping');
                 break;
             case 'stir':
                 this.stageTitle.textContent = 'Stir Coffee';
                 this.stageDescription.textContent = 'Give the coffee a gentle stir, then continue';
                 this.timeDisplay.textContent = '0:00';
+                stageIndicator.classList.add('stage-stir');
+                timerDisplay.classList.add('stage-stir');
                 break;
             case 'brewing':
                 this.stageTitle.textContent = 'Final Brewing';
                 this.stageDescription.textContent = 'Almost ready...';
+                stageIndicator.classList.add('stage-brewing');
+                timerDisplay.classList.add('stage-brewing');
                 break;
             case 'complete':
                 this.stageTitle.textContent = 'Ready to Pour!';
                 this.stageDescription.textContent = 'Your coffee is ready to enjoy';
                 this.timeDisplay.textContent = '0:00';
+                stageIndicator.classList.add('stage-complete');
+                timerDisplay.classList.add('stage-complete');
                 break;
         }
     }
@@ -271,11 +325,64 @@ class FrenchPressTimer {
         // Play audio notification
         this.playAudioNotification(type);
         
-        // Visual flash effect
-        document.body.style.backgroundColor = '#4CAF50';
+        // Enhanced visual flash effect with stage-specific colors
+        this.playVisualAlert(type);
+    }
+
+    playVisualAlert(type = 'default') {
+        const colors = {
+            'steeping_complete': '#DCA561', // autumnYellow for steeping complete
+            'stir_reminder': '#7E9CD8',     // crystalBlue for stir reminder
+            'brewing_complete': '#76946A',  // autumnGreen for brewing complete
+            'default': '#76946A'            // autumnGreen default
+        };
+
+        const color = colors[type] || colors['default'];
+        
+        // Set CSS variable for flash color
+        document.body.style.setProperty('--flash-color', color);
+        document.body.classList.add('flash-alert');
+        
+        // Multiple flash effect for important alerts
+        if (type === 'stir_reminder' || type === 'brewing_complete') {
+            setTimeout(() => {
+                document.body.classList.remove('flash-alert');
+                setTimeout(() => {
+                    document.body.classList.add('flash-alert');
+                    setTimeout(() => {
+                        document.body.classList.remove('flash-alert');
+                    }, 500);
+                }, 100);
+            }, 500);
+        } else {
+            // Single flash for less critical alerts
+            setTimeout(() => {
+                document.body.classList.remove('flash-alert');
+            }, 500);
+        }
+
+        // Add border flash to timer circle for extra visibility
+        this.flashTimerCircle(color);
+    }
+
+    flashTimerCircle(color) {
+        const progressCircle = document.getElementById('progressCircle');
+        const originalStrokeWidth = progressCircle.style.strokeWidth || '8';
+        
+        // Create a subtle pulse effect on the progress circle instead of harsh box shadow
+        progressCircle.style.strokeWidth = '12';
+        progressCircle.style.transition = 'stroke-width 0.3s ease, opacity 0.3s ease';
+        progressCircle.style.opacity = '0.8';
+        
         setTimeout(() => {
-            document.body.style.backgroundColor = '#1a1a1a';
-        }, 200);
+            progressCircle.style.strokeWidth = '10';
+            progressCircle.style.opacity = '0.9';
+            
+            setTimeout(() => {
+                progressCircle.style.strokeWidth = originalStrokeWidth;
+                progressCircle.style.opacity = '1';
+            }, 300);
+        }, 300);
     }
 
     playAudioNotification(type = 'default') {

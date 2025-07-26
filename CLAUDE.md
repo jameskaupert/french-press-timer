@@ -61,23 +61,28 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 **Issue Status:**
 - ✅ Issue #1: Core timer logic and countdown functionality (COMPLETE)
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
-- 🔄 Issue #3: Audio notifications for timer completion (NEXT - placeholder in playNotification method)
-- 🔄 Issue #4: Visual alerts and stage indicators (READY - basic flash implemented)
-- 🔄 Issue #5: Settings page for customizable timing (READY - UI implemented, validation needs work)
+- ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
+- ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - commit 6c518bb pushed to GitHub)
+- 🔄 Issue #5: Settings page for customizable timing (READY - needs minutes:seconds precision)
 - 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
 
-**Next Steps for Issue #3:**
-1. Implement audio file playback in `playNotification()` method
-2. Add audio notifications for steeping completion, brewing completion, and stir reminder
-3. Create configurable audio settings (volume, sound selection)
-4. Add graceful fallback when audio is unavailable/blocked
-5. Enable and update audio-related tests
+**Issue #4 - Complete Implementation:**
+- Enhanced visual alerts with Kanagawa Paper Ink color palette
+- Self-hosted JetBrains Mono font (fonts/jetbrains-mono/)
+- Stage-specific colors and animations (green/yellow/blue/purple/red)
+- Progress circle urgency indicators (color changes, stroke width, pulse)
+- Centered "Coffee Timer" layout with flat SVG settings icon
+- Fixed form controls (checkbox/slider) to use Kanagawa palette
+- Comprehensive visual-alerts.test.js with 19 tests
+- Complete KANAGAWA_PALETTE.md documentation
+- Branch: issue-4-visual-alerts (commit 6c518bb) - pushed to GitHub, no PR created yet
 
-**Key Methods Ready for Enhancement:**
-- `playNotification()` - Currently just console.log, needs audio implementation
-- `updateProgressCircle()` - Working but may need refinement
-- `saveSettings()` - Validation logic needs debugging (tests reveal issues)
-- Timer state management methods are fully implemented and tested
+**Issue #5 - Settings Enhancement Notes:**
+- `saveSettings()` validation logic has test failures that need fixing:
+  - Invalid inputs not properly rejected (values still saved from test setup)
+  - localStorage mocking needs proper setup in tests
+  - Validation should reject out-of-range values without saving
+- Will be addressed during Issue #5 implementation
 

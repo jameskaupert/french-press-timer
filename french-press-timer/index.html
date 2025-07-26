@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>French Press Coffee Timer</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DCD7BA'><path d='M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.38 0 2.5-1.12 2.5-2.5S19.88 5 18.5 5V3zM16 10c0 2.76-2.24 5-5 5s-5-2.24-5-5V5h10v5zm2-2.5c.28 0 .5.22.5.5s-.22.5-.5.5H18V7.5h.5z'/></svg>">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>French Press Timer</h1>
-            <button class="settings-btn" id="settingsBtn" aria-label="Open Settings">⚙️</button>
+            <h1>Coffee Timer</h1>
         </header>
 
         <main class="timer-display">
@@ -32,15 +31,16 @@
 
             <div class="controls">
                 <button class="btn btn-primary" id="startBtn">Start Brewing</button>
-                <button class="btn btn-secondary" id="resetBtn" style="display: none;">Reset</button>
-                <button class="btn btn-secondary" id="continueBtn" style="display: none;">Continue to Final Brewing</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-primary" id="continueBtn" style="display: none;">Continue</button>
+                <button class="btn btn-secondary" id="settingsBtn">Settings</button>
             </div>
         </main>
 
         <div class="settings-modal" id="settingsModal" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>Timer Settings</h3>
+                    <h3>Settings</h3>
                     <button class="close-btn" id="closeBtn">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -65,8 +65,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" id="resetDefaults">Reset to Defaults</button>
-                    <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+                    <button class="btn btn-secondary" id="resetDefaults">Reset</button>
+                    <button class="btn btn-primary" id="saveSettings">Save</button>
                 </div>
             </div>
         </div>

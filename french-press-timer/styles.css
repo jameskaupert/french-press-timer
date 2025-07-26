@@ -1,3 +1,36 @@
+/* JetBrains Mono Font Faces */
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('fonts/jetbrains-mono/webfonts/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('fonts/jetbrains-mono/webfonts/JetBrainsMono-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('fonts/jetbrains-mono/webfonts/JetBrainsMono-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('fonts/jetbrains-mono/webfonts/JetBrainsMono-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Reset and base styles */
 * {
     margin: 0;
@@ -6,9 +39,9 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background-color: #16161D; /* sumiInk0 - Kanagawa dark background */
+    color: #DCD7BA; /* fujiWhite - Kanagawa foreground */
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -25,37 +58,18 @@ body {
 /* Header styles */
 header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 3rem;
 }
 
 header h1 {
     font-size: 3rem;
-    font-weight: 300;
-    color: #ffffff;
+    font-weight: 500;
+    color: #DCD7BA; /* fujiWhite */
 }
 
-.settings-btn {
-    background: none;
-    border: 2px solid #666;
-    color: #ffffff;
-    font-size: 2rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.settings-btn:hover {
-    border-color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
-}
 
 /* Timer display styles */
 .timer-display {
@@ -65,15 +79,81 @@ header h1 {
     gap: 3rem;
 }
 
+.stage-indicator {
+    transition: all 0.3s ease;
+}
+
 .stage-indicator h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: #4CAF50;
+    transition: all 0.3s ease;
 }
 
 .stage-indicator p {
     font-size: 1.5rem;
-    color: #cccccc;
+    color: #C8C093; /* oldWhite - muted foreground */
+    transition: all 0.3s ease;
+}
+
+/* Stage-specific colors - Kanagawa palette */
+.stage-idle h2 {
+    color: #76946A; /* autumnGreen */
+}
+
+.stage-steeping h2 {
+    color: #658594; /* dragonBlue */
+}
+
+.stage-stir h2 {
+    color: #7E9CD8; /* crystalBlue */
+    animation: pulse 2s infinite;
+}
+
+.stage-brewing h2 {
+    color: #957FB8; /* oniViolet */
+}
+
+.stage-complete h2 {
+    color: #76946A; /* autumnGreen */
+    animation: subtle-glow 2s infinite alternate;
+}
+
+/* Visual alert animations */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes subtle-glow {
+    from { text-shadow: 0 0 8px #76946A; }
+    to { text-shadow: 0 0 16px #76946A; }
+}
+
+@keyframes flash {
+    0% { background-color: var(--flash-color, #76946A); }
+    100% { background-color: #16161D; /* sumiInk0 */ }
+}
+
+@keyframes border-pulse {
+    0% { 
+        border: 2px solid transparent; 
+        transform: scale(1);
+    }
+    50% { 
+        border: 2px solid var(--flash-color, #76946A); 
+        transform: scale(1.02);
+    }
+    100% { 
+        border: 2px solid transparent; 
+        transform: scale(1);
+    }
+}
+
+.flash-alert {
+    animation: flash 0.5s ease-out, border-pulse 1s ease-out;
+    border-radius: 12px;
 }
 
 /* Timer circle styles */
@@ -82,15 +162,20 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    padding: 20px;
 }
 
 .time-display {
     font-size: 6rem;
-    font-weight: 300;
-    color: #ffffff;
-    font-family: 'Courier New', monospace;
+    font-weight: 400;
+    color: #DCD7BA; /* fujiWhite */
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     position: absolute;
+    transition: all 0.2s ease;
     z-index: 10;
+    pointer-events: none;
 }
 
 .progress-ring {
@@ -103,24 +188,108 @@ header h1 {
 
 .progress-ring-circle-bg {
     fill: none;
-    stroke: #333;
+    stroke: #1F1F28; /* sumiInk3 - slightly lighter background */
     stroke-width: 8;
 }
 
 .progress-ring-circle {
     fill: none;
-    stroke: #4CAF50;
+    stroke: #76946A; /* autumnGreen - default */
     stroke-width: 8;
     stroke-linecap: round;
-    transition: stroke-dasharray 0.3s ease;
+    transition: stroke-dasharray 0.3s ease, stroke 0.3s ease;
+}
+
+/* Progress circle stage colors - Kanagawa palette */
+.stage-idle .progress-ring-circle {
+    stroke: #76946A; /* autumnGreen */
+}
+
+.stage-steeping .progress-ring-circle {
+    stroke: #658594; /* dragonBlue */
+}
+
+.stage-stir .progress-ring-circle {
+    stroke: #7E9CD8; /* crystalBlue */
+}
+
+.stage-brewing .progress-ring-circle {
+    stroke: #957FB8; /* oniViolet */
+}
+
+.stage-complete .progress-ring-circle {
+    stroke: #76946A; /* autumnGreen */
+}
+
+/* Urgency indicators - progress circle changes */
+.urgency-low .progress-ring-circle {
+    stroke-width: 8;
+    /* Keeps stage-specific color */
+}
+
+.urgency-medium .progress-ring-circle {
+    stroke-width: 10;
+    stroke: #DCA561 !important; /* autumnYellow - overrides stage color */
+    animation: urgency-pulse 3s infinite;
+}
+
+.urgency-high .progress-ring-circle {
+    stroke-width: 12;
+    stroke: #C34043 !important; /* autumnRed - overrides stage color */
+    animation: urgency-pulse 1s infinite;
+}
+
+@keyframes urgency-pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Time display keeps consistent color */
+.time-display {
+    color: #DCD7BA; /* fujiWhite - always consistent */
+}
+
+/* Timer circle cursor and hover effects when clickable (idle/stir stages) */
+.stage-idle .timer-circle,
+.stage-stir .timer-circle {
+    cursor: pointer;
+}
+
+.stage-idle .timer-circle:hover,
+.stage-stir .timer-circle:hover {
+    transform: scale(1.02);
+}
+
+.stage-idle .timer-circle:hover .progress-ring-circle,
+.stage-stir .timer-circle:hover .progress-ring-circle {
+    stroke: #6A9589;
 }
 
 /* Controls styles */
 .controls {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-rows: 60px 60px 60px 60px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+}
+
+.controls #startBtn {
+    grid-row: 1;
+}
+
+.controls #continueBtn {
+    grid-row: 2;
+}
+
+.controls #settingsBtn {
+    grid-row: 3;
+}
+
+.controls #resetBtn {
+    grid-row: 4;
 }
 
 .btn {
@@ -134,21 +303,22 @@ header h1 {
 }
 
 .btn-primary {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #76946A; /* autumnGreen */
+    color: #DCD7BA; /* fujiWhite */
 }
 
 .btn-primary:hover {
-    background-color: #45a049;
+    background-color: #6A9589; /* waveAqua1 */
 }
 
 .btn-secondary {
-    background-color: #666;
-    color: white;
+    background-color: #1F1F28; /* sumiInk3 */
+    color: #DCD7BA; /* fujiWhite */
+    border: 1px solid #6A9589; /* waveAqua1 */
 }
 
 .btn-secondary:hover {
-    background-color: #777;
+    background-color: #957FB8; /* oniViolet */
 }
 
 /* Settings modal styles */
@@ -158,7 +328,7 @@ header h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(22, 22, 29, 0.9); /* sumiInk0 with transparency */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,12 +336,12 @@ header h1 {
 }
 
 .modal-content {
-    background-color: #2a2a2a;
+    background-color: #1F1F28; /* sumiInk3 */
     border-radius: 12px;
     padding: 2rem;
     max-width: 500px;
     width: 90%;
-    border: 2px solid #666;
+    border: 2px solid #6A9589; /* waveAqua1 */
 }
 
 .modal-header {
@@ -183,13 +353,13 @@ header h1 {
 
 .modal-header h3 {
     font-size: 2rem;
-    color: #ffffff;
+    color: #DCD7BA; /* fujiWhite */
 }
 
 .close-btn {
     background: none;
     border: none;
-    color: #ffffff;
+    color: #DCD7BA; /* fujiWhite */
     font-size: 2rem;
     cursor: pointer;
     padding: 0;
@@ -201,7 +371,7 @@ header h1 {
 }
 
 .close-btn:hover {
-    color: #4CAF50;
+    color: #6A9589; /* waveAqua1 - matches Save button hover */
 }
 
 .modal-body {
@@ -217,22 +387,78 @@ header h1 {
     display: block;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: #ffffff;
+    color: #DCD7BA; /* fujiWhite */
 }
 
 .setting-group input {
     width: 100%;
     padding: 0.8rem;
     font-size: 1.2rem;
-    border: 2px solid #666;
+    border: 2px solid #6A9589; /* waveAqua1 */
     border-radius: 6px;
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: #16161D; /* sumiInk0 */
+    color: #DCD7BA; /* fujiWhite */
 }
 
 .setting-group input:focus {
     outline: none;
-    border-color: #4CAF50;
+    border-color: #7E9CD8; /* crystalBlue */
+}
+
+/* Checkbox styling */
+.setting-group input[type="checkbox"] {
+    width: auto;
+    padding: 0;
+    margin-right: 0.5rem;
+    accent-color: #76946A; /* autumnGreen */
+    transform: scale(1.2);
+}
+
+/* Range slider styling */
+.setting-group input[type="range"] {
+    padding: 0;
+    height: 8px;
+    background: #16161D; /* sumiInk0 - darker background for contrast */
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.setting-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #76946A; /* autumnGreen */
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #DCD7BA; /* fujiWhite */
+}
+
+.setting-group input[type="range"]::-webkit-slider-thumb:hover {
+    background: #6A9589; /* waveAqua1 */
+}
+
+.setting-group input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #76946A; /* autumnGreen */
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #DCD7BA; /* fujiWhite */
+    box-sizing: border-box;
+}
+
+.setting-group input[type="range"]::-moz-range-thumb:hover {
+    background: #6A9589; /* waveAqua1 */
+}
+
+.setting-group input[type="range"]::-moz-range-track {
+    background: #16161D; /* sumiInk0 - darker background for contrast */
+    height: 8px;
+    border-radius: 4px;
+    border: none;
 }
 
 .modal-footer {
