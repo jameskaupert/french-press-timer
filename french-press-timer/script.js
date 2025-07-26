@@ -43,8 +43,10 @@ class FrenchPressTimer {
         this.settingsBtn = document.getElementById('settingsBtn');
         this.settingsModal = document.getElementById('settingsModal');
         this.closeBtn = document.getElementById('closeBtn');
-        this.firstTimerInput = document.getElementById('firstTimer');
-        this.secondTimerInput = document.getElementById('secondTimer');
+        this.firstTimerMinutes = document.getElementById('firstTimerMinutes');
+        this.firstTimerSeconds = document.getElementById('firstTimerSeconds');
+        this.secondTimerMinutes = document.getElementById('secondTimerMinutes');
+        this.secondTimerSeconds = document.getElementById('secondTimerSeconds');
         this.audioEnabledInput = document.getElementById('audioEnabled');
         this.audioVolumeInput = document.getElementById('audioVolume');
         this.volumeDisplay = document.getElementById('volumeDisplay');
@@ -128,16 +130,30 @@ class FrenchPressTimer {
     }
 
     updateSettingsDisplay() {
-        this.firstTimerInput.value = Math.floor(this.state.settings.steepTime / 60);
-        this.secondTimerInput.value = Math.floor(this.state.settings.brewTime / 60);
-        this.audioEnabledInput.checked = this.settings.audioEnabled;
-        this.audioVolumeInput.value = this.settings.audioVolume;
+        // Convert seconds to separate minutes and seconds fields
+        const steepMinutes = Math.floor(this.state.settings.steepTime / 60);
+        const steepSeconds = this.state.settings.steepTime % 60;
+        
+        // Defensive checks for DOM elements (needed for test environment)
+        if (this.firstTimerMinutes) this.firstTimerMinutes.value = steepMinutes;
+        if (this.firstTimerSeconds) this.firstTimerSeconds.value = steepSeconds;
+        
+        const brewMinutes = Math.floor(this.state.settings.brewTime / 60);
+        const brewSecondsValue = this.state.settings.brewTime % 60;
+        if (this.secondTimerMinutes) this.secondTimerMinutes.value = brewMinutes;
+        if (this.secondTimerSeconds) this.secondTimerSeconds.value = brewSecondsValue;
+        
+        if (this.audioEnabledInput) this.audioEnabledInput.checked = this.settings.audioEnabled;
+        if (this.audioVolumeInput) this.audioVolumeInput.value = this.settings.audioVolume;
         this.updateVolumeDisplay();
     }
 
     updateVolumeDisplay() {
-        const percentage = Math.round(this.audioVolumeInput.value * 100);
-        this.volumeDisplay.textContent = `${percentage}%`;
+        // Defensive check for DOM elements (needed for test environment)
+        if (this.audioVolumeInput && this.volumeDisplay) {
+            const percentage = Math.round(this.audioVolumeInput.value * 100);
+            this.volumeDisplay.textContent = `${percentage}%`;
+        }
     }
 
     startTimer() {
@@ -462,12 +478,21 @@ class FrenchPressTimer {
     }
 
     saveSettings() {
-        const steepMinutes = parseInt(this.firstTimerInput.value);
-        const brewMinutes = parseInt(this.secondTimerInput.value);
+        // Get values from separate minute and second inputs
+        const steepMinutes = parseInt(this.firstTimerMinutes.value) || 0;
+        const steepSeconds = parseInt(this.firstTimerSeconds.value) || 0;
+        const brewMinutes = parseInt(this.secondTimerMinutes.value) || 0;
+        const brewSecondsValue = parseInt(this.secondTimerSeconds.value) || 0;
+        
+        const steepTime = steepMinutes * 60 + steepSeconds;
+        const brewTime = brewMinutes * 60 + brewSecondsValue;
 
-        if (steepMinutes > 0 && steepMinutes <= 30 && brewMinutes > 0 && brewMinutes <= 30) {
-            this.state.settings.steepTime = steepMinutes * 60;
-            this.state.settings.brewTime = brewMinutes * 60;
+        // Validate inputs first before making any changes
+        if (steepTime > 0 && brewTime > 0 && steepTime <= 1800 && brewTime <= 1800 && 
+            steepSeconds >= 0 && steepSeconds < 60 && brewSecondsValue >= 0 && brewSecondsValue < 60) {
+            // Only update settings if validation passes
+            this.state.settings.steepTime = steepTime;
+            this.state.settings.brewTime = brewTime;
             this.settings.audioEnabled = this.audioEnabledInput.checked;
             this.settings.audioVolume = parseFloat(this.audioVolumeInput.value);
             
@@ -479,7 +504,7 @@ class FrenchPressTimer {
                 this.updateDisplay();
             }
         } else {
-            alert('Please enter valid times between 1 and 30 minutes.');
+            alert('Please enter valid times between 0:01 and 30:00.');
         }
     }
 

@@ -1,17 +1,13 @@
 // Test setup file for Jest
 // Mock DOM elements and localStorage
 
-// Mock localStorage
-const localStorageMock = (() => {
-  let store = {};
-  return {
-    getItem: jest.fn((key) => store[key] || null),
-    setItem: jest.fn((key, value) => { store[key] = value; }),
-    removeItem: jest.fn((key) => { delete store[key]; }),
-    clear: jest.fn(() => { store = {}; }),
-  };
-})();
-global.localStorage = localStorageMock;
+// Simple localStorage mock without Jest spies (tests will add their own)
+global.localStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+  clear: () => {}
+};
 
 // Mock console methods to reduce noise in tests
 global.console = {
@@ -24,9 +20,13 @@ global.console = {
 beforeEach(() => {
   jest.clearAllMocks();
   
-  // Reset localStorage mock
-  localStorageMock.clear();
-  localStorageMock.getItem.mockReturnValue(null);
+  // Reset localStorage to clean state
+  global.localStorage = {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+    clear: () => {}
+  };
   
   // Set up basic DOM structure
   document.body.innerHTML = `

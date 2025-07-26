@@ -58,7 +58,7 @@ describe('FrenchPressTimer', () => {
     });
   });
 
-  describe('Timer State Management [Issue #1 - Core timer logic]', () => {
+  describe('Timer State Management', () => {
     test('should start steeping timer correctly', () => {
       timer.startTimer();
       

@@ -45,12 +45,38 @@
                 </div>
                 <div class="modal-body">
                     <div class="setting-group">
-                        <label for="firstTimer">Steeping Time (minutes):</label>
-                        <input type="number" id="firstTimer" min="1" max="30" value="4">
+                        <fieldset class="time-fieldset">
+                            <legend>Steeping Time:</legend>
+                            <div class="time-input-group">
+                                <label for="firstTimerMinutes" class="sr-only">Minutes</label>
+                                <input type="number" id="firstTimerMinutes" min="0" max="30" value="4" 
+                                       class="time-input" aria-describedby="steep-time-help">
+                                <span class="time-label" aria-hidden="true">min</span>
+                                
+                                <label for="firstTimerSeconds" class="sr-only">Seconds</label>
+                                <input type="number" id="firstTimerSeconds" min="0" max="59" value="0" 
+                                       class="time-input" aria-describedby="steep-time-help">
+                                <span class="time-label" aria-hidden="true">sec</span>
+                            </div>
+                            <div id="steep-time-help" class="help-text">Enter time between 0:01 and 30:00</div>
+                        </fieldset>
                     </div>
                     <div class="setting-group">
-                        <label for="secondTimer">Final Brewing Time (minutes):</label>
-                        <input type="number" id="secondTimer" min="1" max="30" value="8">
+                        <fieldset class="time-fieldset">
+                            <legend>Final Brewing Time:</legend>
+                            <div class="time-input-group">
+                                <label for="secondTimerMinutes" class="sr-only">Minutes</label>
+                                <input type="number" id="secondTimerMinutes" min="0" max="30" value="8" 
+                                       class="time-input" aria-describedby="brew-time-help">
+                                <span class="time-label" aria-hidden="true">min</span>
+                                
+                                <label for="secondTimerSeconds" class="sr-only">Seconds</label>
+                                <input type="number" id="secondTimerSeconds" min="0" max="59" value="0" 
+                                       class="time-input" aria-describedby="brew-time-help">
+                                <span class="time-label" aria-hidden="true">sec</span>
+                            </div>
+                            <div id="brew-time-help" class="help-text">Enter time between 0:01 and 30:00</div>
+                        </fieldset>
                     </div>
                     <div class="setting-group">
                         <label for="audioEnabled">

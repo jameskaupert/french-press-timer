@@ -63,8 +63,8 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #2: TV-friendly UI design with large, readable elements (COMPLETE)
 - ✅ Issue #3: Audio notifications for timer completion (COMPLETE)
 - ✅ Issue #4: Visual alerts and stage indicators (COMPLETE - commit 6c518bb pushed to GitHub)
-- 🔄 Issue #5: Settings page for customizable timing (READY - needs minutes:seconds precision)
-- 🔄 Issue #6: localStorage persistence for user preferences (READY - basic structure implemented)
+- ✅ Issue #5: Settings page for customizable timing (COMPLETE)
+- ✅ Issue #6: localStorage persistence for user preferences (COMPLETE - full save/load/error handling)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - 🔄 Issue #8: Offline functionality optimization (READY)
 

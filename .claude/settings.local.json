@@ -1,8 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm test:*)",
-      "Bash(gh issue list:*)"
+      "Bash(npm test:*)"
     ],
     "deny": []
   }
