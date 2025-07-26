@@ -5,7 +5,7 @@
 
 const FrenchPressTimer = require('../script.js');
 
-describe('FrenchPressTimer Visual Alerts [Issue #4]', () => {
+describe('FrenchPressTimer Visual Alerts', () => {
   let timer;
 
   beforeEach(() => {

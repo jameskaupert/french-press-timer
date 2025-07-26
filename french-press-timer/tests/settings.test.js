@@ -4,6 +4,20 @@ describe('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]',
   let timer;
 
   beforeEach(() => {
+    // Mock localStorage with proper Jest functions
+    Object.defineProperty(global, 'localStorage', {
+      value: {
+        getItem: jest.fn(() => null),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+        clear: jest.fn()
+      },
+      writable: true
+    });
+    
+    // Mock console.warn to avoid noise in tests
+    global.console.warn = jest.fn();
+    
     timer = new FrenchPressTimer();
   });
 
@@ -13,14 +27,14 @@ describe('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]',
     }
   });
 
-  describe.skip('Settings Persistence', () => {
+  describe('Settings Persistence', () => {
     test('should save settings to localStorage', () => {
       timer.state.settings.steepTime = 300;
       timer.state.settings.brewTime = 600;
       
       timer.saveSettingsToStorage();
       
-      expect(localStorage.setItem).toHaveBeenCalledWith(
+      expect(global.localStorage.setItem).toHaveBeenCalledWith(
         'frenchPressSettings',
         JSON.stringify({
           steepTime: 300,
@@ -32,18 +46,15 @@ describe('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]',
     });
 
     test('should handle localStorage save errors gracefully', () => {
-      const originalSetItem = localStorage.setItem;
-      localStorage.setItem = jest.fn(() => {
+      global.localStorage.setItem.mockImplementationOnce(() => {
         throw new Error('localStorage full');
       });
       
       expect(() => timer.saveSettingsToStorage()).not.toThrow();
-      expect(console.warn).toHaveBeenCalledWith(
+      expect(global.console.warn).toHaveBeenCalledWith(
         'Could not save settings to localStorage:',
         expect.any(Error)
       );
-      
-      localStorage.setItem = originalSetItem;
     });
 
     test('should load settings from localStorage', () => {
@@ -53,27 +64,27 @@ describe('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]',
         audioEnabled: true,
         audioVolume: 0.5
       };
-      localStorage.getItem.mockReturnValue(JSON.stringify(savedSettings));
+      global.localStorage.getItem.mockReturnValueOnce(JSON.stringify(savedSettings));
       
       const newTimer = new FrenchPressTimer();
       
       expect(newTimer.state.settings.steepTime).toBe(180);
       expect(newTimer.state.settings.brewTime).toBe(360);
-      expect(localStorage.getItem).toHaveBeenCalledWith('frenchPressSettings');
+      expect(global.localStorage.getItem).toHaveBeenCalledWith('frenchPressSettings');
     });
 
     test('should handle malformed localStorage data', () => {
-      localStorage.getItem.mockReturnValue('invalid json');
+      global.localStorage.getItem.mockReturnValueOnce('invalid json');
       
       expect(() => new FrenchPressTimer()).not.toThrow();
+      expect(global.console.warn).toHaveBeenCalledWith(
+        'Could not load settings from localStorage:',
+        expect.any(Error)
+      );
       
       const newTimer = new FrenchPressTimer();
       expect(newTimer.state.settings.steepTime).toBe(240); // default
       expect(newTimer.state.settings.brewTime).toBe(480); // default
-      expect(console.warn).toHaveBeenCalledWith(
-        'Could not load settings from localStorage:',
-        expect.any(Error)
-      );
     });
   });
 

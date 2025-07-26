@@ -136,18 +136,22 @@ class FrenchPressTimer {
         const brewMinutes = Math.floor(this.state.settings.brewTime / 60);
         const brewSeconds = this.state.settings.brewTime % 60;
         
-        this.firstTimerMinutesInput.value = steepMinutes;
-        this.firstTimerSecondsInput.value = steepSeconds;
-        this.secondTimerMinutesInput.value = brewMinutes;
-        this.secondTimerSecondsInput.value = brewSeconds;
-        this.audioEnabledInput.checked = this.settings.audioEnabled;
-        this.audioVolumeInput.value = this.settings.audioVolume;
+        // Defensive checks for DOM elements (needed for test environment)
+        if (this.firstTimerMinutesInput) this.firstTimerMinutesInput.value = steepMinutes;
+        if (this.firstTimerSecondsInput) this.firstTimerSecondsInput.value = steepSeconds;
+        if (this.secondTimerMinutesInput) this.secondTimerMinutesInput.value = brewMinutes;
+        if (this.secondTimerSecondsInput) this.secondTimerSecondsInput.value = brewSeconds;
+        if (this.audioEnabledInput) this.audioEnabledInput.checked = this.settings.audioEnabled;
+        if (this.audioVolumeInput) this.audioVolumeInput.value = this.settings.audioVolume;
         this.updateVolumeDisplay();
     }
 
     updateVolumeDisplay() {
-        const percentage = Math.round(this.audioVolumeInput.value * 100);
-        this.volumeDisplay.textContent = `${percentage}%`;
+        // Defensive check for DOM elements (needed for test environment)
+        if (this.audioVolumeInput && this.volumeDisplay) {
+            const percentage = Math.round(this.audioVolumeInput.value * 100);
+            this.volumeDisplay.textContent = `${percentage}%`;
+        }
     }
 
     startTimer() {
