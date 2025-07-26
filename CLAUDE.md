@@ -69,7 +69,7 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - 🔄 Issue #8: Offline functionality optimization (READY)
 
 **Issue #5 - Settings Enhancement (COMPLETE):**
-- **Branch:** issue-5-settings-enhancement  
+- **Branch:** issue-5-settings-enhancement (merged to main)
 - **Completed Features:**
   - ✅ Fixed `saveSettings()` validation logic
   - ✅ Enhanced input validation with proper rejection of invalid values
@@ -78,4 +78,19 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
   - ✅ Updated UI with separate minutes/seconds input fields
   - ✅ Comprehensive test coverage for validation logic
 - **Enhancement:** Settings now support precise timing with minutes:seconds format (e.g., 4:30 for 4 minutes 30 seconds)
+
+**Issue #6 - localStorage Persistence (COMPLETE):**
+- **Branch:** issue-6-localstorage-persistence (PR #12 ready for merge)
+- **Completed Features:**
+  - ✅ localStorage save/load functionality for all timer settings
+  - ✅ Automatic settings restoration on app initialization  
+  - ✅ Robust error handling for localStorage failures (private browsing, quota exceeded)
+  - ✅ Defensive DOM checks for test environment compatibility
+  - ✅ Enhanced UX with TV-optimized sizing and accessibility improvements
+  - ✅ Complete test coverage: 17/17 tests passing (persistence, validation, UI, modal)
+- **Technical Implementation:**
+  - `saveSettingsToStorage()` and `loadSettings()` methods with try/catch error handling
+  - Settings persist as JSON in localStorage with key `frenchPressSettings`
+  - Graceful fallbacks when localStorage unavailable
+  - All settings tests enabled and working (Issues #5 & #6 functionality)
 
