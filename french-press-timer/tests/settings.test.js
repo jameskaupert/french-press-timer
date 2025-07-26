@@ -1,6 +1,6 @@
 const FrenchPressTimer = require('../script.js');
 
-describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]', () => {
+describe('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStorage]', () => {
   let timer;
 
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
     }
   });
 
-  describe('Settings Persistence', () => {
+  describe.skip('Settings Persistence', () => {
     test('should save settings to localStorage', () => {
       timer.state.settings.steepTime = 300;
       timer.state.settings.brewTime = 600;
@@ -24,13 +24,16 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
         'frenchPressSettings',
         JSON.stringify({
           steepTime: 300,
-          brewTime: 600
+          brewTime: 600,
+          audioEnabled: true,
+          audioVolume: 0.5
         })
       );
     });
 
     test('should handle localStorage save errors gracefully', () => {
-      localStorage.setItem.mockImplementation(() => {
+      const originalSetItem = localStorage.setItem;
+      localStorage.setItem = jest.fn(() => {
         throw new Error('localStorage full');
       });
       
@@ -39,12 +42,16 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
         'Could not save settings to localStorage:',
         expect.any(Error)
       );
+      
+      localStorage.setItem = originalSetItem;
     });
 
     test('should load settings from localStorage', () => {
       const savedSettings = {
         steepTime: 180,
-        brewTime: 360
+        brewTime: 360,
+        audioEnabled: true,
+        audioVolume: 0.5
       };
       localStorage.getItem.mockReturnValue(JSON.stringify(savedSettings));
       
@@ -52,6 +59,7 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
       
       expect(newTimer.state.settings.steepTime).toBe(180);
       expect(newTimer.state.settings.brewTime).toBe(360);
+      expect(localStorage.getItem).toHaveBeenCalledWith('frenchPressSettings');
     });
 
     test('should handle malformed localStorage data', () => {
@@ -62,6 +70,10 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
       const newTimer = new FrenchPressTimer();
       expect(newTimer.state.settings.steepTime).toBe(240); // default
       expect(newTimer.state.settings.brewTime).toBe(480); // default
+      expect(console.warn).toHaveBeenCalledWith(
+        'Could not load settings from localStorage:',
+        expect.any(Error)
+      );
     });
   });
 
@@ -70,82 +82,99 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
       // Mock alert to avoid actual browser dialogs
       global.alert = jest.fn();
       
-      // Set up input values
-      timer.firstTimerInput.value = '5';
-      timer.secondTimerInput.value = '10';
+      // Store original settings for validation tests
+      timer.originalSteepTime = timer.state.settings.steepTime;
+      timer.originalBrewTime = timer.state.settings.brewTime;
     });
 
     test('should save valid settings', () => {
+      timer.firstTimerMinutesInput.value = '5';
+      timer.firstTimerSecondsInput.value = '30';
+      timer.secondTimerMinutesInput.value = '10';
+      timer.secondTimerSecondsInput.value = '15';
+      
       jest.spyOn(timer, 'saveSettingsToStorage').mockImplementation(() => {});
       jest.spyOn(timer, 'closeSettings').mockImplementation(() => {});
       
       timer.saveSettings();
       
-      expect(timer.state.settings.steepTime).toBe(300); // 5 minutes
-      expect(timer.state.settings.brewTime).toBe(600); // 10 minutes
+      expect(timer.state.settings.steepTime).toBe(330); // 5:30
+      expect(timer.state.settings.brewTime).toBe(615); // 10:15
       expect(timer.saveSettingsToStorage).toHaveBeenCalled();
       expect(timer.closeSettings).toHaveBeenCalled();
     });
 
     test('should reject invalid steep time (too low)', () => {
-      timer.firstTimerInput.value = '0';
-      timer.secondTimerInput.value = '8';
+      timer.firstTimerMinutesInput.value = '0';
+      timer.firstTimerSecondsInput.value = '0';
+      timer.secondTimerMinutesInput.value = '8';
+      timer.secondTimerSecondsInput.value = '0';
       
       timer.saveSettings();
       
-      expect(alert).toHaveBeenCalledWith('Please enter valid times between 1 and 30 minutes.');
-      expect(timer.state.settings.steepTime).toBe(240); // unchanged
+      expect(alert).toHaveBeenCalledWith('Please enter valid times. Each timer must be between 1 second and 30 minutes.');
+      expect(timer.state.settings.steepTime).toBe(timer.originalSteepTime); // unchanged
     });
 
     test('should reject invalid steep time (too high)', () => {
-      timer.firstTimerInput.value = '31';
-      timer.secondTimerInput.value = '8';
+      timer.firstTimerMinutesInput.value = '31';
+      timer.firstTimerSecondsInput.value = '0';
+      timer.secondTimerMinutesInput.value = '8';
+      timer.secondTimerSecondsInput.value = '0';
       
       timer.saveSettings();
       
-      expect(alert).toHaveBeenCalledWith('Please enter valid times between 1 and 30 minutes.');
-      expect(timer.state.settings.steepTime).toBe(240); // unchanged
+      expect(alert).toHaveBeenCalledWith('Please enter valid times. Each timer must be between 1 second and 30 minutes.');
+      expect(timer.state.settings.steepTime).toBe(timer.originalSteepTime); // unchanged
     });
 
     test('should reject invalid brew time (too low)', () => {
-      timer.firstTimerInput.value = '4';
-      timer.secondTimerInput.value = '0';
+      timer.firstTimerMinutesInput.value = '4';
+      timer.firstTimerSecondsInput.value = '0';
+      timer.secondTimerMinutesInput.value = '0';
+      timer.secondTimerSecondsInput.value = '0';
       
       timer.saveSettings();
       
-      expect(alert).toHaveBeenCalledWith('Please enter valid times between 1 and 30 minutes.');
-      expect(timer.state.settings.brewTime).toBe(480); // unchanged
+      expect(alert).toHaveBeenCalledWith('Please enter valid times. Each timer must be between 1 second and 30 minutes.');
+      expect(timer.state.settings.brewTime).toBe(timer.originalBrewTime); // unchanged
     });
 
     test('should reject invalid brew time (too high)', () => {
-      timer.firstTimerInput.value = '4';
-      timer.secondTimerInput.value = '31';
+      timer.firstTimerMinutesInput.value = '4';
+      timer.firstTimerSecondsInput.value = '0';
+      timer.secondTimerMinutesInput.value = '31';
+      timer.secondTimerSecondsInput.value = '0';
       
       timer.saveSettings();
       
-      expect(alert).toHaveBeenCalledWith('Please enter valid times between 1 and 30 minutes.');
-      expect(timer.state.settings.brewTime).toBe(480); // unchanged
+      expect(alert).toHaveBeenCalledWith('Please enter valid times. Each timer must be between 1 second and 30 minutes.');
+      expect(timer.state.settings.brewTime).toBe(timer.originalBrewTime); // unchanged
     });
 
     test('should handle non-numeric input', () => {
-      timer.firstTimerInput.value = 'abc';
-      timer.secondTimerInput.value = '8';
+      timer.firstTimerMinutesInput.value = 'abc';
+      timer.firstTimerSecondsInput.value = '30';
+      timer.secondTimerMinutesInput.value = '8';
+      timer.secondTimerSecondsInput.value = '0';
       
       timer.saveSettings();
       
-      expect(alert).toHaveBeenCalledWith('Please enter valid times between 1 and 30 minutes.');
+      expect(alert).toHaveBeenCalledWith('Please enter valid times. Each timer must be between 1 second and 30 minutes.');
     });
   });
 
   describe('Settings UI', () => {
     test('should update settings display inputs', () => {
-      timer.state.settings.steepTime = 300; // 5 minutes
-      timer.state.settings.brewTime = 600; // 10 minutes
+      timer.state.settings.steepTime = 330; // 5 minutes 30 seconds
+      timer.state.settings.brewTime = 615; // 10 minutes 15 seconds
       
       timer.updateSettingsDisplay();
       
-      expect(timer.firstTimerInput.value).toBe('5');
-      expect(timer.secondTimerInput.value).toBe('10');
+      expect(timer.firstTimerMinutesInput.value).toBe('5');
+      expect(timer.firstTimerSecondsInput.value).toBe('30');
+      expect(timer.secondTimerMinutesInput.value).toBe('10');
+      expect(timer.secondTimerSecondsInput.value).toBe('15');
     });
 
     test('should reset to default settings', () => {
@@ -190,8 +219,10 @@ describe.skip('FrenchPressTimer Settings [Issues #5 & #6 - Settings & localStora
 
     test('should update display when saving settings in idle state', () => {
       timer.state.currentStage = 'idle';
-      timer.firstTimerInput.value = '5';
-      timer.secondTimerInput.value = '10';
+      timer.firstTimerMinutesInput.value = '5';
+      timer.firstTimerSecondsInput.value = '0';
+      timer.secondTimerMinutesInput.value = '10';
+      timer.secondTimerSecondsInput.value = '0';
       
       jest.spyOn(timer, 'saveSettingsToStorage').mockImplementation(() => {});
       jest.spyOn(timer, 'closeSettings').mockImplementation(() => {});
