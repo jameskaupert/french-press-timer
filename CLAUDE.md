@@ -66,7 +66,7 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #5: Settings page for customizable timing (COMPLETE - enhanced with minutes:seconds precision)
 - ✅ Issue #6: localStorage persistence for user preferences (COMPLETE - full save/load/error handling)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
-- 🔄 Issue #8: Offline functionality optimization (READY)
+- ✅ Issue #8: Offline functionality optimization (COMPLETE - PWA manifest + font preloading)
 
 **Issue #5 - Settings Enhancement (COMPLETE):**
 - **Branch:** issue-5-settings-enhancement (merged to main)
@@ -93,4 +93,21 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
   - Settings persist as JSON in localStorage with key `frenchPressSettings`
   - Graceful fallbacks when localStorage unavailable
   - All settings tests enabled and working (Issues #5 & #6 functionality)
+
+**Issue #8 - Offline Functionality Optimization (COMPLETE):**
+- **Branch:** issue-8-offline-functionality  
+- **Completed Features:**
+  - ✅ PWA Web App Manifest with proper icons and metadata
+  - ✅ Font preloading for faster initial load performance
+  - ✅ Offline-first architecture analysis (no service worker needed)
+  - ✅ Surge.sh deployment preparation with optimal caching strategy
+- **Technical Implementation:**
+  - `manifest.json` with PWA configuration for installability
+  - Font preload hints for JetBrains Mono variants (Regular, Medium, SemiBold)
+  - App already offline-capable due to zero external dependencies
+  - localStorage persistence ensures settings survive offline usage
+- **Deployment:**
+  - Surge CLI installed and ready for deployment
+  - Target domain: `brewer.surge.sh`
+  - Next step: `surge login` then `cd french-press-timer && surge . --domain brewer.surge.sh`
 
