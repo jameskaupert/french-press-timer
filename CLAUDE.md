@@ -79,6 +79,10 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - Complete KANAGAWA_PALETTE.md documentation
 - Branch: issue-4-visual-alerts (commit 6c518bb) - pushed to GitHub, no PR created yet
 
-**Key Methods Ready for Enhancement:**
-- `saveSettings()` - Validation logic needs debugging (tests reveal issues)
+**Issue #5 - Settings Enhancement Notes:**
+- `saveSettings()` validation logic has test failures that need fixing:
+  - Invalid inputs not properly rejected (values still saved from test setup)
+  - localStorage mocking needs proper setup in tests
+  - Validation should reject out-of-range values without saving
+- Will be addressed during Issue #5 implementation
 
