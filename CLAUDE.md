@@ -12,6 +12,16 @@ This project uses `mise` for tool version management. To set up the development 
 
 This will trust the mise configuration and install the required tools (Node.js and GitHub CLI).
 
+## Deployment
+
+Deploy the application to production:
+
+```bash
+./scripts/deploy
+```
+
+This deploys to `brewer.surge.sh` using the Surge.sh platform.
+
 ## Project Structure
 
 Repository structure:
@@ -111,8 +121,8 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
   - localStorage persistence ensures settings survive offline usage
 - **Deployment:**
   - Surge CLI installed and ready for deployment
-  - Target domain: `brewer.surge.sh`
-  - Next step: `surge login` then `cd french-press-timer && surge . --domain brewer.surge.sh`
+  - Target domain: `brewer.surge.sh` (LIVE)
+  - Deploy command: `./scripts/deploy`
 
 **Issue #14 - Mobile Responsive Design (IN PROGRESS):**
 - **Branch:** issue-14-mobile-responsive
