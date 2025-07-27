@@ -29,7 +29,7 @@ Repository structure:
 
 **French Press Timer Application:**
 - **Frontend:** Vanilla HTML5, CSS3, JavaScript (no external dependencies)
-- **Design:** TV-optimized interface with large fonts and high contrast
+- **Design:** Responsive interface optimized for TV, desktop, and mobile with large fonts and high contrast
 - **Structure:** Single-page application with modal settings
 - **State Management:** Simple class-based state in FrenchPressTimer
 - **Testing:** Jest with jsdom for DOM testing
@@ -67,6 +67,9 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - ✅ Issue #6: localStorage persistence for user preferences (COMPLETE - full save/load/error handling)
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - ✅ Issue #8: Offline functionality optimization (COMPLETE - PWA manifest + font preloading)
+- 🔄 Issue #14: Mobile responsive design for iPhone and PWA support (IN PROGRESS)
+- 🔄 Issue #15: Musical arpeggio audio system and iOS compatibility (PENDING)
+- 🔄 Issue #16: 4K TV optimization and unified responsive grid system (PENDING)
 
 **Issue #5 - Settings Enhancement (COMPLETE):**
 - **Branch:** issue-5-settings-enhancement (merged to main)
@@ -110,4 +113,33 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
   - Surge CLI installed and ready for deployment
   - Target domain: `brewer.surge.sh`
   - Next step: `surge login` then `cd french-press-timer && surge . --domain brewer.surge.sh`
+
+**Issue #14 - Mobile Responsive Design (IN PROGRESS):**
+- **Branch:** issue-14-mobile-responsive
+- **Architecture-First Implementation Plan:**
+  - 🔄 CSS custom properties system with responsive design tokens
+  - 🔄 iPhone 11 safe area handling and iOS PWA optimizations
+  - 🔄 Touch interaction architecture with 44px minimum targets
+  - 🔄 Comprehensive breakpoint strategy (390px, 768px, 1024px, 1920px, 3840px)
+  - 🔄 Responsive component scaling (progress circle, buttons, modal)
+  - 🔄 VoiceOver optimization and accessibility enhancements
+  - 🔄 Custom PWA install prompt with coffee-themed messaging
+  - 🔄 Device detection and performance optimizations
+  - 🔄 Responsive testing framework with visual regression tests
+- **Technical Approach:**
+  - Mobile-first CSS architecture using custom properties for scalable design tokens
+  - Touch-optimized interaction patterns with proper feedback and gesture handling
+  - iOS-specific PWA optimizations (safe areas, status bar, splash screens)
+  - Systematic accessibility improvements (VoiceOver, dynamic type, reduced motion)
+  - Cross-device performance optimization with device detection
+
+**Next Development Phase - Audio Enhancement & 4K Optimization:**
+- **Issue #15:** Replace beep audio with 1-3-5-1 arpeggio system, fix iOS audio compatibility
+- **Issue #16:** 4K TV optimization (4096x2160 at 300% scaling) and unified responsive grid
+
+**Target Devices:**
+- iPhone 11 (390x844px) - PWA mode priority
+- 4K TV (4096x2160) at 300% Windows scaling  
+- Standard desktop (1920x1080)
+- Tablet landscape (1024x768)
 

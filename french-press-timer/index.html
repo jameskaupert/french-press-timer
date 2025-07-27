@@ -2,10 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>French Press Coffee Timer</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#DCD7BA">
+    
+    <!-- iOS PWA Optimizations -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coffee Timer">
+    
+    <!-- iOS Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%2316161D'/><path d='M140 45H70c-8.25 0-15 6.75-15 15v42.825c0 28.725 22.125 53.85 50.85 54.675 29.7.9 54.15-22.95 54.15-52.5v-7.5h3.75c10.35 0 18.75-8.4 18.75-18.75S149.1 60 138.75 60V45zM135 82.5c0 20.7-16.8 37.5-37.5 37.5S60 103.2 60 82.5V67.5h75v15zm15-18.75c2.1 0 3.75 1.65 3.75 3.75s-1.65 3.75-3.75 3.75H142.5V63.75H150z' fill='%23DCD7BA'/></svg>">
+    <link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 152 152'><rect width='152' height='152' fill='%2316161D'/><path d='M118 38H59c-7 0-12.7 5.7-12.7 12.7v36.3c0 24.3 18.7 45.6 43.1 46.3 25.1.8 45.8-19.4 45.8-44.5v-6.4h3.2c8.8 0 15.9-7.1 15.9-15.9S126.4 51 117.6 51V38zM114 70c0 17.5-14.2 31.7-31.7 31.7S50.6 87.5 50.6 70V57h63.4v13zm12.7-15.9c1.8 0 3.2 1.4 3.2 3.2s-1.4 3.2-3.2 3.2H120V54.1h6.7z' fill='%23DCD7BA'/></svg>">
+    <link rel="apple-touch-icon" sizes="120x120" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect width='120' height='120' fill='%2316161D'/><path d='M93 30H47c-5.5 0-10 4.5-10 10v28.5c0 19.1 14.8 35.9 33.9 36.5 19.8.6 36.1-15.3 36.1-35v-5h2.5c6.9 0 12.5-5.6 12.5-12.5S92.4 40 85.5 40V30zM90 55c0 13.8-11.2 25-25 25s-25-11.2-25-25V45h50v10zm10-12.5c1.4 0 2.5 1.1 2.5 2.5s-1.1 2.5-2.5 2.5H95V42.5H100z' fill='%23DCD7BA'/></svg>">
+    
+    <!-- iOS Splash Screens -->
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1170 2532'><rect width='1170' height='2532' fill='%2316161D'/><text x='585' y='1350' font-family='monospace' font-size='80' fill='%23DCD7BA' text-anchor='middle'>Coffee Timer</text></svg>">
     <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-Medium.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
@@ -24,10 +37,15 @@
                 <p id="stageDescription">Press start to begin brewing</p>
             </div>
 
-            <div class="timer-circle">
-                <div class="time-display" id="timeDisplay">4:00</div>
+            <div class="timer-circle" 
+                 role="button" 
+                 tabindex="0"
+                 aria-label="Start brewing timer"
+                 aria-describedby="stageDescription"
+                 aria-live="polite">
+                <div class="time-display" id="timeDisplay" aria-label="Timer display: 4 minutes 0 seconds">4:00</div>
                 <div class="progress-ring">
-                    <svg class="progress-ring-svg" width="300" height="300">
+                    <svg class="progress-ring-svg" width="300" height="300" aria-hidden="true">
                         <circle class="progress-ring-circle-bg" cx="150" cy="150" r="140"></circle>
                         <circle class="progress-ring-circle" cx="150" cy="150" r="140" id="progressCircle"></circle>
                     </svg>
@@ -50,22 +68,32 @@
                 </div>
                 <div class="modal-body">
                     <div class="setting-group">
-                        <label for="firstTimer">Steeping Time:</label>
-                        <div class="time-input-group">
-                            <input type="number" id="firstTimerMinutes" min="0" max="30" value="4" class="time-input">
-                            <span class="time-label">min</span>
-                            <input type="number" id="firstTimerSeconds" min="0" max="59" value="0" class="time-input">
-                            <span class="time-label">sec</span>
-                        </div>
+                        <fieldset class="time-fieldset">
+                            <legend>Steeping Time:</legend>
+                            <div class="time-input-group">
+                                <label for="firstTimerMinutes" class="sr-only">Steeping minutes</label>
+                                <input type="number" id="firstTimerMinutes" min="0" max="30" value="4" class="time-input" aria-label="Steeping time minutes">
+                                <span class="time-label">min</span>
+                                <label for="firstTimerSeconds" class="sr-only">Steeping seconds</label>
+                                <input type="number" id="firstTimerSeconds" min="0" max="59" value="0" class="time-input" aria-label="Steeping time seconds">
+                                <span class="time-label">sec</span>
+                            </div>
+                            <div class="help-text">Range: 0-30 minutes</div>
+                        </fieldset>
                     </div>
                     <div class="setting-group">
-                        <label for="secondTimer">Final Brewing Time:</label>
-                        <div class="time-input-group">
-                            <input type="number" id="secondTimerMinutes" min="0" max="30" value="8" class="time-input">
-                            <span class="time-label">min</span>
-                            <input type="number" id="secondTimerSeconds" min="0" max="59" value="0" class="time-input">
-                            <span class="time-label">sec</span>
-                        </div>
+                        <fieldset class="time-fieldset">
+                            <legend>Final Brewing Time:</legend>
+                            <div class="time-input-group">
+                                <label for="secondTimerMinutes" class="sr-only">Final brewing minutes</label>
+                                <input type="number" id="secondTimerMinutes" min="0" max="30" value="8" class="time-input" aria-label="Final brewing time minutes">
+                                <span class="time-label">min</span>
+                                <label for="secondTimerSeconds" class="sr-only">Final brewing seconds</label>
+                                <input type="number" id="secondTimerSeconds" min="0" max="59" value="0" class="time-input" aria-label="Final brewing time seconds">
+                                <span class="time-label">sec</span>
+                            </div>
+                            <div class="help-text">Range: 0-30 minutes</div>
+                        </fieldset>
                     </div>
                     <div class="setting-group">
                         <label for="audioEnabled">
@@ -75,8 +103,8 @@
                     </div>
                     <div class="setting-group">
                         <label for="audioVolume">Audio Volume:</label>
-                        <input type="range" id="audioVolume" min="0" max="1" step="0.1" value="0.5">
-                        <span id="volumeDisplay">50%</span>
+                        <input type="range" id="audioVolume" min="0" max="1" step="0.1" value="0.5" aria-describedby="volumeDisplay">
+                        <span id="volumeDisplay" aria-live="polite">50%</span>
                     </div>
                 </div>
                 <div class="modal-footer">

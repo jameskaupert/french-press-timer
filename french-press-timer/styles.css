@@ -31,6 +31,133 @@
     font-display: swap;
 }
 
+/* CSS Custom Properties - Responsive Design Tokens */
+:root {
+    /* Base Scale Factors */
+    --scale-factor: 1;
+    --font-scale: 1;
+    --spacing-scale: 1;
+    
+    /* Touch Target Standards */
+    --touch-target-min: 44px; /* iOS HIG minimum */
+    --touch-target-optimal: 48px; /* Android Material Design */
+    
+    /* Responsive Breakpoints */
+    --mobile-max: 480px;
+    --tablet-max: 768px;
+    --desktop-max: 1920px;
+    --tv-min: 1920px;
+    
+    /* Safe Area Support for iOS */
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
+    
+    /* Base Spacing Scale */
+    --spacing-xs: calc(0.5rem * var(--spacing-scale));
+    --spacing-sm: calc(1rem * var(--spacing-scale));
+    --spacing-md: calc(1.5rem * var(--spacing-scale));
+    --spacing-lg: calc(2rem * var(--spacing-scale));
+    --spacing-xl: calc(3rem * var(--spacing-scale));
+    
+    /* Base Font Sizes */
+    --font-xs: calc(0.875rem * var(--font-scale));
+    --font-sm: calc(1rem * var(--font-scale));
+    --font-md: calc(1.5rem * var(--font-scale));
+    --font-lg: calc(2.5rem * var(--font-scale));
+    --font-xl: calc(3rem * var(--font-scale));
+    --font-timer: calc(6rem * var(--font-scale));
+    
+    /* Component Dimensions */
+    --progress-size: calc(300px * var(--scale-factor));
+    --button-height: calc(60px * var(--scale-factor));
+    --container-max: calc(800px * var(--scale-factor));
+    
+    /* Animation & Transition Preferences */
+    --animation-duration: 0.3s;
+    --animation-easing: ease;
+}
+
+/* iPhone 11 (390px) - Mobile First */
+@media (max-width: 390px) {
+    :root {
+        --scale-factor: 0.75;
+        --font-scale: 0.85;
+        --spacing-scale: 0.7;
+        --progress-size: 250px; /* Fixed minimum for readability */
+        --button-height: 48px; /* Touch target minimum */
+        --font-timer: 4rem; /* Absolute minimum for timer readability */
+    }
+}
+
+/* Small Mobile (391px - 480px) */
+@media (min-width: 391px) and (max-width: 480px) {
+    :root {
+        --scale-factor: 0.85;
+        --font-scale: 0.9;
+        --spacing-scale: 0.75;
+    }
+}
+
+/* Tablet Portrait (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    :root {
+        --scale-factor: 0.9;
+        --font-scale: 0.9;
+        --spacing-scale: 0.8;
+    }
+}
+
+/* Tablet Landscape / Small Desktop (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    :root {
+        --scale-factor: 1;
+        --font-scale: 1;
+        --spacing-scale: 1;
+    }
+}
+
+/* Large Desktop (1025px - 1919px) */
+@media (min-width: 1025px) and (max-width: 1919px) {
+    :root {
+        --scale-factor: 1.1;
+        --font-scale: 1.1;
+        --spacing-scale: 1.1;
+    }
+}
+
+/* 4K TV (1920px+) */
+@media (min-width: 1920px) {
+    :root {
+        --scale-factor: 1.5;
+        --font-scale: 1.4;
+        --spacing-scale: 1.3;
+    }
+}
+
+/* Ultra 4K (3840px+) */
+@media (min-width: 3840px) {
+    :root {
+        --scale-factor: 2.5;
+        --font-scale: 2.2;
+        --spacing-scale: 2;
+    }
+}
+
+/* Accessibility: Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --animation-duration: 0s;
+    }
+    
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
 /* Reset and base styles */
 * {
     margin: 0;
@@ -43,15 +170,30 @@ body {
     background-color: #16161D; /* sumiInk0 - Kanagawa dark background */
     color: #DCD7BA; /* fujiWhite - Kanagawa foreground */
     min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    /* iOS Safe Area Support */
+    padding-top: var(--safe-area-top);
+    padding-bottom: var(--safe-area-bottom);
+    padding-left: var(--safe-area-left);
+    padding-right: var(--safe-area-right);
+    
+    /* Prevent touch callouts and user selection on mobile */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    /* Prevent zoom on mobile */
+    touch-action: manipulation;
 }
 
 .container {
     width: 100%;
-    max-width: 800px;
-    padding: 2rem;
+    max-width: var(--container-max);
+    padding: var(--spacing-lg);
     text-align: center;
 }
 
@@ -60,40 +202,39 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: var(--font-xl);
     font-weight: 500;
     color: #DCD7BA; /* fujiWhite */
 }
-
 
 /* Timer display styles */
 .timer-display {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: var(--spacing-xl);
 }
 
 .stage-indicator {
-    transition: all 0.3s ease;
+    transition: all var(--animation-duration) var(--animation-easing);
 }
 
 .stage-indicator h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: var(--font-lg);
+    margin-bottom: var(--spacing-sm);
     color: #4CAF50;
-    transition: all 0.3s ease;
+    transition: all var(--animation-duration) var(--animation-easing);
 }
 
 .stage-indicator p {
-    font-size: 1.5rem;
+    font-size: var(--font-md);
     color: #C8C093; /* oldWhite - muted foreground */
-    transition: all 0.3s ease;
+    transition: all var(--animation-duration) var(--animation-easing);
 }
 
 /* Stage-specific colors - Kanagawa palette */
@@ -162,20 +303,35 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all var(--animation-duration) var(--animation-easing);
     border-radius: 50%;
     padding: 20px;
+    
+    /* Touch-friendly interaction */
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+/* Touch feedback for timer circle */
+.timer-circle:active {
+    transform: scale(0.98);
 }
 
 .time-display {
-    font-size: 6rem;
+    font-size: var(--font-timer);
     font-weight: 400;
     color: #DCD7BA; /* fujiWhite */
     font-family: 'JetBrains Mono', 'Courier New', monospace;
     position: absolute;
-    transition: all 0.2s ease;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all var(--animation-duration) var(--animation-easing);
     z-index: 10;
     pointer-events: none;
+    
+    /* Ensure minimum legibility on mobile */
+    min-font-size: 2.5rem;
 }
 
 .progress-ring {
@@ -184,6 +340,10 @@ header h1 {
 
 .progress-ring-svg {
     transform: rotate(-90deg);
+    width: var(--progress-size);
+    height: var(--progress-size);
+    min-width: 200px; /* Ensure minimum readability */
+    min-height: 200px;
 }
 
 .progress-ring-circle-bg {
@@ -269,11 +429,60 @@ header h1 {
 /* Controls styles */
 .controls {
     display: grid;
-    grid-template-rows: 60px 60px 60px 60px;
+    grid-template-rows: repeat(4, var(--button-height));
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: var(--spacing-sm);
     justify-items: center;
     align-items: center;
+}
+
+/* Adaptive grid for landscape orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+    .controls {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, var(--button-height));
+        gap: var(--spacing-md);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .controls #startBtn {
+        grid-row: 1;
+        grid-column: 1;
+    }
+    
+    .controls #continueBtn {
+        grid-row: 1;
+        grid-column: 1; /* Same position as start for state switching */
+    }
+    
+    .controls #settingsBtn {
+        grid-row: 1;
+        grid-column: 2;
+    }
+    
+    .controls #resetBtn {
+        grid-row: 2;
+        grid-column: 1 / -1; /* Span full width */
+    }
+    
+    /* Adjust timer layout for landscape */
+    .timer-display {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-lg);
+        max-width: 100%;
+    }
+    
+    .stage-indicator {
+        flex: 0 0 auto;
+        text-align: left;
+        max-width: 300px;
+    }
+    
+    .timer-circle {
+        flex: 0 0 auto;
+    }
 }
 
 .controls #startBtn {
@@ -293,13 +502,21 @@ header h1 {
 }
 
 .btn {
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-md);
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--animation-duration) var(--animation-easing);
     min-width: 200px;
+    height: var(--button-height);
+    
+    /* Touch-friendly minimum size */
+    min-height: var(--touch-target-min);
+    
+    /* Enhanced touch interaction */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
@@ -311,6 +528,12 @@ header h1 {
     background-color: #6A9589; /* waveAqua1 */
 }
 
+/* Touch-specific active states for mobile feedback */
+.btn-primary:active {
+    background-color: #5B8F7A; /* Darker green for press feedback */
+    transform: scale(0.98);
+}
+
 .btn-secondary {
     background-color: #1F1F28; /* sumiInk3 */
     color: #DCD7BA; /* fujiWhite */
@@ -319,6 +542,11 @@ header h1 {
 
 .btn-secondary:hover {
     background-color: #957FB8; /* oniViolet */
+}
+
+.btn-secondary:active {
+    background-color: #8A6CA8; /* Darker violet for press feedback */
+    transform: scale(0.98);
 }
 
 /* Time input group styles */
@@ -339,6 +567,7 @@ header h1 {
     color: #C8C093; /* oldWhite */
     font-size: 1.4rem;
     text-align: center;
+    min-height: var(--touch-target-min);
 }
 
 .time-input:focus {
@@ -394,20 +623,78 @@ header h1 {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh; /* Dynamic viewport height for mobile */
     background-color: rgba(22, 22, 29, 0.9); /* sumiInk0 with transparency */
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    
+    /* iOS safe area support */
+    padding-top: var(--safe-area-top);
+    padding-bottom: var(--safe-area-bottom);
+    padding-left: var(--safe-area-left);
+    padding-right: var(--safe-area-right);
 }
 
 .modal-content {
     background-color: #1F1F28; /* sumiInk3 */
     border-radius: 12px;
-    padding: 2rem;
+    padding: var(--spacing-lg);
     max-width: 500px;
     width: 90%;
     border: 2px solid #6A9589; /* waveAqua1 */
+    max-height: 90vh;
+    max-height: 90dvh; /* Dynamic viewport height */
+    overflow-y: auto;
+    
+    /* Enhanced touch scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile-first modal adjustments - Bottom Sheet Pattern */
+@media (max-width: 480px) {
+    .settings-modal {
+        align-items: flex-end;
+        padding: 0;
+        background-color: rgba(22, 22, 29, 0.8); /* Less opaque for bottom sheet */
+    }
+    
+    .modal-content {
+        width: 100%;
+        max-width: none;
+        height: 85vh; /* Allow backdrop visibility */
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0; /* Bottom sheet style */
+        border: none;
+        border-top: 4px solid #6A9589; /* Accent strip */
+        margin: 0;
+        
+        /* Bottom sheet animation prep */
+        transform: translateY(0);
+        transition: transform 0.3s ease-out;
+        
+        /* Grab handle styling */
+        position: relative;
+    }
+    
+    /* Add grab handle for bottom sheet */
+    .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background-color: #727169; /* fujiGray */
+        border-radius: 2px;
+        opacity: 0.6;
+    }
+    
+    .modal-header {
+        padding-top: 20px; /* Space for grab handle */
+    }
 }
 
 .modal-header {
@@ -429,15 +716,30 @@ header h1 {
     font-size: 2rem;
     cursor: pointer;
     padding: 0;
-    width: 40px;
-    height: 40px;
+    width: var(--touch-target-min);
+    height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 4px;
+    transition: all var(--animation-duration) var(--animation-easing);
+    
+    /* Touch interaction optimizations */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .close-btn:hover {
     color: #6A9589; /* waveAqua1 - matches Save button hover */
+    background-color: rgba(106, 149, 137, 0.1);
+}
+
+.close-btn:active {
+    color: #5B8F7A;
+    background-color: rgba(106, 149, 137, 0.2);
+    transform: scale(0.95);
 }
 
 .modal-body {
@@ -458,17 +760,24 @@ header h1 {
 
 .setting-group input {
     width: 100%;
-    padding: 0.8rem;
-    font-size: 1.2rem;
+    padding: var(--spacing-sm);
+    font-size: var(--font-sm);
     border: 2px solid #6A9589; /* waveAqua1 */
     border-radius: 6px;
     background-color: #16161D; /* sumiInk0 */
     color: #DCD7BA; /* fujiWhite */
+    min-height: var(--touch-target-min);
+    
+    /* Touch-friendly interaction */
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .setting-group input:focus {
     outline: none;
     border-color: #7E9CD8; /* crystalBlue */
+    box-shadow: 0 0 0 3px rgba(126, 156, 216, 0.2);
 }
 
 /* Checkbox styling */
@@ -494,12 +803,16 @@ header h1 {
 .setting-group input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: var(--touch-target-min); /* Touch-friendly size */
+    height: var(--touch-target-min);
     background: #76946A; /* autumnGreen */
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #DCD7BA; /* fujiWhite */
+    transition: all var(--animation-duration) var(--animation-easing);
+}
+
+.setting-group input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.2);
 }
 
 .setting-group input[type="range"]::-webkit-slider-thumb:hover {
@@ -576,13 +889,5 @@ header h1 {
         font-size: 1.2rem;
     }
     
-    .progress-ring-svg {
-        width: 250px;
-        height: 250px;
-    }
-    
-    .btn {
-        font-size: 1.2rem;
-        min-width: 150px;
-    }
+    /* Legacy styles removed - now handled by custom properties */
 }
