@@ -14,6 +14,7 @@ class FrenchPressTimer {
 
         this.timerInterval = null;
         this.audioContext = null;
+        this.audioCache = new Map(); // Cache for loaded audio files
         
         // Default settings
         this.settings = {
@@ -38,6 +39,7 @@ class FrenchPressTimer {
         this.startBtn = document.getElementById('startBtn');
         this.resetBtn = document.getElementById('resetBtn');
         this.continueBtn = document.getElementById('continueBtn');
+        this.testAudioBtn = document.getElementById('testAudioBtn');
 
         // Settings modal elements
         this.settingsBtn = document.getElementById('settingsBtn');
@@ -71,6 +73,7 @@ class FrenchPressTimer {
         this.startBtn.addEventListener('click', () => this.startTimer());
         this.resetBtn.addEventListener('click', () => this.resetTimer());
         this.continueBtn.addEventListener('click', () => this.continueToFinalBrewing());
+        this.testAudioBtn.addEventListener('click', () => this.testAudio());
 
         // Settings modal
         this.settingsBtn.addEventListener('click', () => this.openSettings());
@@ -399,13 +402,133 @@ class FrenchPressTimer {
         }, 300);
     }
 
-    playAudioNotification(type = 'default') {
+    async playAudioNotification(type = 'default') {
         try {
             // Check if audio is enabled in settings
             if (!this.settings.audioEnabled) {
+                console.log('Audio disabled in settings');
                 return;
             }
 
+            console.log(`Playing audio notification: ${type}`);
+            
+            // Try to play arpeggio audio file first, fallback to synthesized beeps
+            const audioPlayed = await this.playArpeggioAudio(type);
+            if (!audioPlayed) {
+                console.log('Arpeggio audio failed, falling back to synthesized beeps');
+                // Fallback to synthesized beeps for compatibility
+                this.playSynthesizedAudio(type);
+            }
+        } catch (error) {
+            console.warn('Audio notification failed:', error);
+            // Final fallback to synthesized beeps
+            try {
+                this.playSynthesizedAudio(type);
+            } catch (fallbackError) {
+                console.error('Both audio systems failed:', fallbackError);
+            }
+        }
+    }
+
+    async playArpeggioAudio(type = 'default') {
+        try {
+            // Map notification types to audio files
+            const audioFiles = {
+                'steeping_complete': './assets/audio/steeping-complete.wav',
+                'stir_reminder': './assets/audio/stir-reminder.wav',
+                'brewing_complete': './assets/audio/brewing-complete.wav',
+                'default': './assets/audio/default-notification.wav'
+            };
+
+            const audioFile = audioFiles[type] || audioFiles['default'];
+            console.log(`Attempting to play arpeggio audio: ${type} -> ${audioFile}`);
+            
+            // Check cache first
+            if (this.audioCache.has(audioFile)) {
+                console.log('Using cached audio file');
+                const audio = this.audioCache.get(audioFile).cloneNode();
+                audio.volume = this.settings.audioVolume || 0.5;
+                await this.playAudioElement(audio);
+                return true;
+            }
+
+            // Load and cache audio file
+            console.log('Loading new audio file');
+            const audio = new Audio(audioFile);
+            audio.volume = this.settings.audioVolume || 0.5;
+            audio.preload = 'auto';
+            
+            // iOS compatibility: ensure audio can play
+            if (typeof audio.play === 'function') {
+                await this.playAudioElement(audio);
+                this.audioCache.set(audioFile, audio);
+                console.log('Successfully played and cached arpeggio audio');
+                return true;
+            }
+            
+            console.warn('Audio.play not available');
+            return false;
+        } catch (error) {
+            console.warn('Arpeggio audio failed, using fallback:', error);
+            return false;
+        }
+    }
+
+    async playAudioElement(audio) {
+        return new Promise((resolve, reject) => {
+            console.log('Setting up audio element for playback');
+            
+            // iOS compatibility: handle audio context unlock
+            const playAudio = async () => {
+                try {
+                    console.log('Audio can play through, attempting playback');
+                    
+                    // Create audio context for iOS unlock if needed
+                    if (!this.audioContext) {
+                        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
+                    
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        await playPromise;
+                        console.log('Audio playback successful');
+                    }
+                    resolve();
+                } catch (playError) {
+                    console.error('Audio playback failed:', playError);
+                    reject(playError);
+                }
+            };
+            
+            const handleError = (error) => {
+                console.error('Audio loading failed:', error);
+                reject(error);
+            };
+            
+            audio.addEventListener('canplaythrough', playAudio, { once: true });
+            audio.addEventListener('error', handleError, { once: true });
+            
+            // Add timeout in case loading takes too long
+            const timeout = setTimeout(() => {
+                console.warn('Audio loading timeout, trying to play anyway');
+                playAudio().catch(reject);
+            }, 2000);
+            
+            audio.addEventListener('canplaythrough', () => clearTimeout(timeout), { once: true });
+            audio.addEventListener('error', () => clearTimeout(timeout), { once: true });
+            
+            // Start loading
+            console.log('Starting audio load');
+            audio.load();
+        });
+    }
+
+    playSynthesizedAudio(type = 'default') {
+        try {
             // Create audio context if it doesn't exist
             if (!this.audioContext) {
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -431,8 +554,7 @@ class FrenchPressTimer {
                     this.playBeepSequence([800], [0.3], 0);
             }
         } catch (error) {
-            console.warn('Audio notification failed:', error);
-            // Graceful fallback - audio is not critical to functionality
+            console.warn('Synthesized audio failed:', error);
         }
     }
 
@@ -523,6 +645,35 @@ class FrenchPressTimer {
         if (this.state.currentStage === 'idle') {
             this.updateDisplay();
         }
+    }
+
+    testAudio() {
+        console.log('Testing audio system...');
+        
+        // Test all arpeggio types in sequence
+        const testSequence = [
+            { type: 'steeping_complete', delay: 0 },
+            { type: 'stir_reminder', delay: 2000 },
+            { type: 'brewing_complete', delay: 4000 },
+            { type: 'default', delay: 6000 }
+        ];
+        
+        testSequence.forEach(({ type, delay }) => {
+            setTimeout(() => {
+                console.log(`Testing ${type} audio...`);
+                this.playAudioNotification(type);
+            }, delay);
+        });
+        
+        // Also show a message to user
+        const originalText = this.testAudioBtn.textContent;
+        this.testAudioBtn.textContent = '🎵 Playing...';
+        this.testAudioBtn.disabled = true;
+        
+        setTimeout(() => {
+            this.testAudioBtn.textContent = originalText;
+            this.testAudioBtn.disabled = false;
+        }, 8000);
     }
 }
 
