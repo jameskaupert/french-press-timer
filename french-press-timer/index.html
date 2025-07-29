@@ -21,7 +21,6 @@
     <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1170 2532'><rect width='1170' height='2532' fill='%2316161D'/><text x='585' y='1350' font-family='monospace' font-size='80' fill='%23DCD7BA' text-anchor='middle'>Coffee Timer</text></svg>">
     <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-Medium.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="fonts/jetbrains-mono/webfonts/JetBrainsMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DCD7BA'><path d='M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7v-1h.5c1.38 0 2.5-1.12 2.5-2.5S19.88 5 18.5 5V3zM16 10c0 2.76-2.24 5-5 5s-5-2.24-5-5V5h10v5zm2-2.5c.28 0 .5.22.5.5s-.22.5-.5.5H18V7.5h.5z'/></svg>">
 </head>
@@ -45,18 +44,18 @@
                  aria-live="polite">
                 <div class="time-display" id="timeDisplay" aria-label="Timer display: 4 minutes 0 seconds">4:00</div>
                 <div class="progress-ring">
-                    <svg class="progress-ring-svg" width="300" height="300" aria-hidden="true">
-                        <circle class="progress-ring-circle-bg" cx="150" cy="150" r="140"></circle>
-                        <circle class="progress-ring-circle" cx="150" cy="150" r="140" id="progressCircle"></circle>
+                    <svg class="progress-ring-svg" viewBox="0 0 100 100" aria-hidden="true">
+                        <circle class="progress-ring-circle-bg" cx="50" cy="50" r="45"></circle>
+                        <circle class="progress-ring-circle" cx="50" cy="50" r="45" id="progressCircle"></circle>
                     </svg>
                 </div>
             </div>
 
             <div class="controls">
                 <button class="btn btn-primary" id="startBtn">Start Brewing</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
                 <button class="btn btn-primary" id="continueBtn" style="display: none;">Continue</button>
                 <button class="btn btn-secondary" id="settingsBtn">Settings</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
             </div>
         </main>
 

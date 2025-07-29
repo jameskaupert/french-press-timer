@@ -195,6 +195,7 @@ class FrenchPressTimer {
     }
 
     showStirReminder() {
+        this.startBtn.style.display = 'none';
         this.continueBtn.style.display = 'inline-block';
         // Play stir reminder notification after a brief delay
         setTimeout(() => {
@@ -215,7 +216,10 @@ class FrenchPressTimer {
     }
 
     showComplete() {
-        this.resetBtn.textContent = 'Start New Brew';
+        // Show "Start New Brew" button in top position
+        this.continueBtn.style.display = 'none';
+        this.startBtn.style.display = 'inline-block';
+        this.startBtn.textContent = 'Start New Brew';
     }
 
     resetTimer() {
@@ -227,9 +231,10 @@ class FrenchPressTimer {
         this.state.totalTime = 0;
         this.state.isRunning = false;
 
+        // Reset to initial state: Start Brewing button on top, Reset on bottom
         this.startBtn.style.display = 'inline-block';
+        this.startBtn.textContent = 'Start Brewing';
         this.continueBtn.style.display = 'none';
-        this.resetBtn.textContent = 'Reset';
 
         this.updateDisplay();
     }
@@ -299,8 +304,8 @@ class FrenchPressTimer {
                 timerDisplay.classList.add('stage-steeping');
                 break;
             case 'stir':
-                this.stageTitle.textContent = 'Stir Coffee';
-                this.stageDescription.textContent = 'Give the coffee a gentle stir, then continue';
+                this.stageTitle.textContent = 'Stir Coffee Gently';
+                this.stageDescription.textContent = '...then continue brewing';
                 this.timeDisplay.textContent = '0:00';
                 stageIndicator.classList.add('stage-stir');
                 timerDisplay.classList.add('stage-stir');

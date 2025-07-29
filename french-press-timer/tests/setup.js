@@ -49,9 +49,9 @@ beforeEach(() => {
         <div class="timer-circle">
           <div class="time-display" id="timeDisplay">4:00</div>
           <div class="progress-ring">
-            <svg class="progress-ring-svg" width="300" height="300">
-              <circle class="progress-ring-circle-bg" cx="150" cy="150" r="140"></circle>
-              <circle class="progress-ring-circle" cx="150" cy="150" r="140" id="progressCircle"></circle>
+            <svg class="progress-ring-svg" viewBox="0 0 100 100">
+              <circle class="progress-ring-circle-bg" cx="50" cy="50" r="45"></circle>
+              <circle class="progress-ring-circle" cx="50" cy="50" r="45" id="progressCircle"></circle>
             </svg>
           </div>
         </div>
@@ -110,7 +110,7 @@ beforeEach(() => {
   // Mock SVG circle properties
   const circle = document.getElementById('progressCircle');
   if (circle) {
-    circle.r = { baseVal: { value: 140 } };
+    circle.r = { baseVal: { value: 45 } };
     circle.style = {};
   }
 });

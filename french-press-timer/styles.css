@@ -79,69 +79,96 @@
     --animation-easing: ease;
 }
 
-/* iPhone 11 (390px) - Mobile First */
+/* iPhone 11/12/13 (390px) - Optimized Mobile Experience */
 @media (max-width: 390px) {
     :root {
         --scale-factor: 0.75;
         --font-scale: 0.85;
-        --spacing-scale: 0.7;
-        --progress-size: 250px; /* Fixed minimum for readability */
-        --button-height: 48px; /* Touch target minimum */
-        --font-timer: 4rem; /* Absolute minimum for timer readability */
+        --spacing-scale: 0.6;
+        --progress-size: 160px; /* Much smaller to prevent clipping */
+        --button-height: 46px; /* iOS minimum touch target */
+        --font-timer: 4rem; /* Larger timer text for bigger circle */
     }
 }
 
-/* Small Mobile (391px - 480px) */
-@media (min-width: 391px) and (max-width: 480px) {
+/* iPhone Plus/Pro Max (391px - 430px) */
+@media (min-width: 391px) and (max-width: 430px) {
     :root {
-        --scale-factor: 0.85;
-        --font-scale: 0.9;
-        --spacing-scale: 0.75;
+        --scale-factor: 1.15;
+        --font-scale: 1.25;
+        --spacing-scale: 1.05;
+        --progress-size: 300px;
+        --button-height: 52px;
+        --font-timer: 6rem;
     }
 }
 
-/* Tablet Portrait (481px - 768px) */
-@media (min-width: 481px) and (max-width: 768px) {
+/* Small Tablets Portrait (431px - 768px) */
+@media (min-width: 431px) and (max-width: 768px) {
     :root {
-        --scale-factor: 0.9;
-        --font-scale: 0.9;
-        --spacing-scale: 0.8;
-    }
-}
-
-/* Tablet Landscape / Small Desktop (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-        --scale-factor: 1;
-        --font-scale: 1;
-        --spacing-scale: 1;
-    }
-}
-
-/* Large Desktop (1025px - 1919px) */
-@media (min-width: 1025px) and (max-width: 1919px) {
-    :root {
-        --scale-factor: 1.1;
+        --scale-factor: 1.0;
         --font-scale: 1.1;
-        --spacing-scale: 1.1;
+        --spacing-scale: 1.0;
+        --progress-size: 320px;
+        --button-height: 55px;
+        --font-timer: 6.5rem;
     }
 }
 
-/* 4K TV (1920px+) */
-@media (min-width: 1920px) {
+/* Large Tablets / Small Desktop (769px - 1023px) */
+@media (min-width: 769px) and (max-width: 1023px) {
     :root {
-        --scale-factor: 1.5;
-        --font-scale: 1.4;
-        --spacing-scale: 1.3;
+        --scale-factor: 1.0;
+        --font-scale: 1.0;
+        --spacing-scale: 1.0;
+        --progress-size: 350px;
+        --button-height: 60px;
+        --font-timer: 7rem;
     }
 }
 
-/* Ultra 4K (3840px+) */
+/* Desktop (1024px - 1364px) */
+@media (min-width: 1024px) and (max-width: 1364px) {
+    :root {
+        --scale-factor: 1.0;
+        --font-scale: 1.0;
+        --spacing-scale: 1.0;
+    }
+}
+
+/* 4K at 300% Scaling - Effective Viewport (1365px - 1919px) */
+@media (min-width: 1365px) and (max-width: 1919px) {
+    :root {
+        --scale-factor: 1.2;
+        --font-scale: 1.3;
+        --spacing-scale: 1.2;
+        --progress-size: 400px;
+        --button-height: 70px;
+        --font-timer: 8rem;
+    }
+}
+
+/* Large Desktop / TV (1920px - 3839px) */
+@media (min-width: 1920px) and (max-width: 3839px) {
+    :root {
+        --scale-factor: 1.6;
+        --font-scale: 1.5;
+        --spacing-scale: 1.4;
+        --progress-size: 450px;
+        --button-height: 80px;
+        --font-timer: 9rem;
+    }
+}
+
+/* True 4K / 8K Displays (3840px+) */
 @media (min-width: 3840px) {
     :root {
-        --scale-factor: 2.5;
-        --font-scale: 2.2;
-        --spacing-scale: 2;
+        --scale-factor: 2.8;
+        --font-scale: 2.5;
+        --spacing-scale: 2.2;
+        --progress-size: 600px;
+        --button-height: 120px;
+        --font-timer: 12rem;
     }
 }
 
@@ -349,13 +376,13 @@ header h1 {
 .progress-ring-circle-bg {
     fill: none;
     stroke: #1F1F28; /* sumiInk3 - slightly lighter background */
-    stroke-width: 8;
+    stroke-width: 4;
 }
 
 .progress-ring-circle {
     fill: none;
     stroke: #76946A; /* autumnGreen - default */
-    stroke-width: 8;
+    stroke-width: 4;
     stroke-linecap: round;
     transition: stroke-dasharray 0.3s ease, stroke 0.3s ease;
 }
@@ -383,18 +410,18 @@ header h1 {
 
 /* Urgency indicators - progress circle changes */
 .urgency-low .progress-ring-circle {
-    stroke-width: 8;
+    stroke-width: 4;
     /* Keeps stage-specific color */
 }
 
 .urgency-medium .progress-ring-circle {
-    stroke-width: 10;
+    stroke-width: 4;
     stroke: #DCA561 !important; /* autumnYellow - overrides stage color */
     animation: urgency-pulse 3s infinite;
 }
 
 .urgency-high .progress-ring-circle {
-    stroke-width: 12;
+    stroke-width: 4;
     stroke: #C34043 !important; /* autumnRed - overrides stage color */
     animation: urgency-pulse 1s infinite;
 }
@@ -482,6 +509,84 @@ header h1 {
     
     .timer-circle {
         flex: 0 0 auto;
+    }
+}
+
+/* 4K TV Optimizations (3840px+) */
+@media (min-width: 3840px) {
+    /* TV-optimized layout with generous spacing */
+    .container {
+        padding: calc(var(--spacing-xl) * 2);
+        max-width: 70%; /* Prevent excessive stretching on huge displays */
+    }
+    
+    /* TV-friendly button arrangement */
+    .controls {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, var(--button-height));
+        gap: calc(var(--spacing-lg) * 2);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    /* Enhanced visual hierarchy for TV viewing */
+    header h1 {
+        font-size: calc(var(--font-xl) * 1.2);
+        margin-bottom: calc(var(--spacing-xl) * 1.5);
+    }
+    
+    .stage-indicator h2 {
+        font-size: calc(var(--font-lg) * 1.3);
+    }
+    
+    .stage-indicator p {
+        font-size: calc(var(--font-md) * 1.2);
+    }
+    
+    /* TV-optimized modal sizing */
+    .modal-content {
+        max-width: 900px;
+        padding: calc(var(--spacing-xl) * 1.5);
+    }
+    
+    .modal-header h3 {
+        font-size: calc(2rem * 1.4);
+    }
+    
+    /* Larger form elements for TV interaction */
+    .time-input {
+        width: 120px;
+        padding: calc(var(--spacing-sm) * 1.5);
+        font-size: calc(1.4rem * 1.3);
+    }
+    
+    .setting-group label {
+        font-size: calc(1.2rem * 1.3);
+    }
+}
+
+/* 4K at 300% Windows Scaling Optimizations (1365px-1919px) */
+@media (min-width: 1365px) and (max-width: 1919px) {
+    /* Optimized for 4K displays with OS scaling */
+    .container {
+        max-width: 900px;
+        padding: calc(var(--spacing-lg) * 1.3);
+    }
+    
+    /* Enhanced readability at effective scaling */
+    .stage-indicator h2 {
+        font-size: calc(var(--font-lg) * 1.1);
+    }
+    
+    /* Better button spacing for this viewport */
+    .controls {
+        gap: calc(var(--spacing-sm) * 1.3);
+    }
+    
+    /* Modal optimizations */
+    .modal-content {
+        max-width: 650px;
+        padding: calc(var(--spacing-lg) * 1.2);
     }
 }
 
@@ -653,7 +758,7 @@ header h1 {
 }
 
 /* Mobile-first modal adjustments - Bottom Sheet Pattern */
-@media (max-width: 480px) {
+@media (max-width: 430px) {
     .settings-modal {
         align-items: flex-end;
         padding: 0;
@@ -694,6 +799,116 @@ header h1 {
     
     .modal-header {
         padding-top: 20px; /* Space for grab handle */
+    }
+}
+
+/* iPhone 11 Specific Touch Optimizations */
+@media (max-width: 390px) {
+    /* Minimal padding to maximize space for circle */
+    .container {
+        padding: 8px;
+        padding-top: calc(var(--safe-area-top) + 8px);
+        padding-bottom: calc(var(--safe-area-bottom) + 8px);
+    }
+    
+    /* Tighter spacing for header */
+    header {
+        margin-bottom: 12px;
+    }
+    
+    /* Larger header for better hierarchy, try single line */
+    header h1 {
+        font-size: 2rem;
+        line-height: 1.1;
+        white-space: nowrap;
+    }
+    
+    /* Timer display adjustments - perfect centering */
+    .timer-display {
+        gap: 0;
+        justify-content: space-between;
+        height: calc(100vh - 120px); /* Account for header and safe areas */
+        max-height: calc(100dvh - 120px);
+    }
+    
+    .stage-indicator {
+        flex: 0 0 auto;
+    }
+    
+    /* Properly sized and centered progress circle */
+    .timer-circle {
+        padding: 5px;
+        width: 270px;  /* Match button width minus small margin for glow */
+        height: 270px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex: 1 0 auto; /* Take remaining space and center */
+        align-self: center;
+    }
+    
+    .controls {
+        flex: 0 0 200px; /* Fixed allocation for button area */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding-bottom: 8px; /* Small bottom padding */
+    }
+    
+    /* Ensure SVG is properly sized and centered */
+    .progress-ring-svg {
+        width: 270px;
+        height: 270px;
+    }
+    
+    /* Timer text positioning */
+    .time-display {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--font-timer);
+        z-index: 10;
+    }
+    
+    /* Button improvements - larger text, perfect centering */
+    .btn {
+        min-height: 46px;
+        min-width: 280px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 16px;
+    }
+    
+    /* Tighter control spacing */
+    .controls {
+        gap: 12px;
+    }
+    
+    .stage-indicator h2 {
+        font-size: 1.4rem;
+        margin-bottom: 12px; /* Increased spacing between title and description */
+    }
+    
+    .stage-indicator p {
+        font-size: 0.95rem;
+        line-height: 1.3;
+        margin-bottom: 0;
+    }
+    
+    /* Force consistent stroke width on iPhone 11 */
+    .progress-ring-circle {
+        stroke-width: 4 !important;
+    }
+    
+    .progress-ring-circle-bg {
+        stroke-width: 4 !important;
     }
 }
 
@@ -867,27 +1082,3 @@ header h1 {
     justify-content: flex-end;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    .time-display {
-        font-size: 4rem;
-    }
-    
-    .stage-indicator h2 {
-        font-size: 2rem;
-    }
-    
-    .stage-indicator p {
-        font-size: 1.2rem;
-    }
-    
-    /* Legacy styles removed - now handled by custom properties */
-}
