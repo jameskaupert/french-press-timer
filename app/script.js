@@ -216,10 +216,7 @@ class FrenchPressTimer {
     }
 
     showComplete() {
-        // Show "Start New Brew" button in top position
-        this.continueBtn.style.display = 'none';
-        this.startBtn.style.display = 'inline-block';
-        this.startBtn.textContent = 'Start New Brew';
+        this.resetBtn.textContent = 'Start New Brew';
     }
 
     resetTimer() {
@@ -231,10 +228,10 @@ class FrenchPressTimer {
         this.state.totalTime = 0;
         this.state.isRunning = false;
 
-        // Reset to initial state: Start Brewing button on top, Reset on bottom
         this.startBtn.style.display = 'inline-block';
         this.startBtn.textContent = 'Start Brewing';
         this.continueBtn.style.display = 'none';
+        this.resetBtn.textContent = 'Reset';
 
         this.updateDisplay();
     }
@@ -430,7 +427,8 @@ class FrenchPressTimer {
                     this.playBeepSequence([400], [0.5], 0);
                     break;
                 case 'brewing_complete':
-                    this.playBeepSequence([600, 800, 1000], [0.2, 0.2, 0.4], 150);
+                    // Simple C major arpeggio: C-E-G-C (1-3-5-1)
+                    this.playBeepSequence([523, 659, 784, 1047], [0.4, 0.4, 0.4, 0.6], 100);
                     break;
                 default:
                     this.playBeepSequence([800], [0.3], 0);
