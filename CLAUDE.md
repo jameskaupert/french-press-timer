@@ -27,7 +27,7 @@ This deploys to `brewer.surge.sh` using the Surge.sh platform.
 Repository structure:
 - `mise.toml` - Tool version management configuration
 - `scripts/setup` - Development environment setup script
-- `french-press-timer/` - French press coffee timer web application
+- `app/` - French press coffee timer web application
   - `index.html` - Main application file with semantic HTML structure
   - `styles.css` - TV-friendly CSS with large, readable elements
   - `script.js` - JavaScript timer application (FrenchPressTimer class)
@@ -56,9 +56,9 @@ French Press Coffee Timer - Requirements Document is available in the repository
 
 The project uses Jest with jsdom for testing core functionality. Tests are organized by GitHub issue scope:
 
-- **Run all active tests:** `npm test --prefix french-press-timer`
-- **Run with coverage:** `npm run test:coverage --prefix french-press-timer`
-- **Watch mode:** `npm run test:watch --prefix french-press-timer`
+- **Run all active tests:** `npm test --prefix app`
+- **Run with coverage:** `npm run test:coverage --prefix app`
+- **Watch mode:** `npm run test:watch --prefix app`
 
 Tests are disabled/enabled per GitHub issue to avoid noise from unimplemented features:
 - Issues #1-2 (Core timer and UI): ✅ Active
@@ -78,7 +78,7 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - ✅ Issue #8: Offline functionality optimization (COMPLETE - PWA manifest + font preloading)
 - 🔄 Issue #14: Mobile responsive design for iPhone and PWA support (IN PROGRESS)
-- ✅ Issue #15: Musical arpeggio audio system and iOS compatibility (COMPLETE - 1-3-5-1 arpeggios + fallback system)
+- ✅ Issue #15: Musical arpeggio audio system (COMPLETE - synthesized C major arpeggio for brewing completion)
 - 🔄 Issue #16: 4K TV optimization and unified responsive grid system (PENDING)
 
 **Issue #5 - Settings Enhancement (COMPLETE):**
@@ -146,19 +146,18 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 **Issue #15 - Musical Arpeggio Audio System (COMPLETE):**
 - **Branch:** issue-15-musical-arpeggio-audio
 - **Completed Features:**
-  - ✅ Generated 1-3-5-1 musical arpeggios in C, G, F, A major keys (132KB WAV files each)
-  - ✅ Hybrid audio system: arpeggio files with synthesized beep fallback
-  - ✅ iOS audio compatibility: AudioContext unlock, promise-based playback, timeout handling
-  - ✅ Smart audio caching system for performance optimization
-  - ✅ Audio test button (🎵 Test Audio) for debugging and user testing
+  - ✅ Synthesized C major arpeggio (C-E-G-C) for brewing completion
+  - ✅ Reliable AudioContext-based sound generation
+  - ✅ Zero external dependencies or file loading
+  - ✅ Cross-browser compatibility including mobile
+  - ✅ Volume control integration with existing settings
   - ✅ Comprehensive error handling with graceful fallbacks
-  - ✅ Complete test coverage: 20 tests covering all audio functionality
+  - ✅ Complete test coverage: 14 tests covering all audio functionality
 - **Technical Implementation:**
-  - Musical arpeggio generator script (`generate-arpeggio.js`) creates WAV files
-  - Audio files mapped to timer events: steeping-complete, stir-reminder, brewing-complete, default
-  - Volume control integration with existing settings system
-  - Cross-browser compatibility (Chrome, Firefox, Safari, iOS Safari)
-  - Detailed console logging for debugging audio issues
+  - Simple, reliable synthesized audio using Web Audio API
+  - Distinct notification sounds for each timer event
+  - Musical arpeggio frequencies: 523Hz, 659Hz, 784Hz, 1047Hz (C-E-G-C)
+  - Production-ready with no file loading or CORS issues
 
 **Next Development Phase - Mobile & 4K Optimization:**
 - **Issue #16:** 4K TV optimization (4096x2160 at 300% scaling) and unified responsive grid
