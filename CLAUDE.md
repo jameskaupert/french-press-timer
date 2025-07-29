@@ -17,11 +17,13 @@ This will trust the mise configuration and install the required tools (Node.js a
 Repository structure:
 - `mise.toml` - Tool version management configuration
 - `scripts/setup` - Development environment setup script
-- `french-press-timer/` - French press coffee timer web application
+- `app/` - French press coffee timer web application
   - `index.html` - Main application file with semantic HTML structure
   - `styles.css` - TV-friendly CSS with large, readable elements
   - `script.js` - JavaScript timer application (FrenchPressTimer class)
-  - `assets/audio/` - Directory for notification sounds
+  - `assets/` - Directory for application assets
+  - `fonts/` - JetBrains Mono font files
+  - `manifest.json` - PWA manifest configuration
   - `package.json` - Jest testing configuration
   - `tests/` - Test suite organized by GitHub issue scope
 
@@ -36,7 +38,7 @@ Repository structure:
 - **Workflow:** Two-stage brewing process (4min steep + 8min brew with stir reminder)
 
 **Key Classes:**
-- `FrenchPressTimer` (`script.js:2`) - Main application class handling all timer logic, UI updates, and settings
+- `FrenchPressTimer` (`app/script.js:2`) - Main application class handling all timer logic, UI updates, and settings
 
 ## Project Requirements
 
@@ -46,9 +48,9 @@ French Press Coffee Timer - Requirements Document is available in the repository
 
 The project uses Jest with jsdom for testing core functionality. Tests are organized by GitHub issue scope:
 
-- **Run all active tests:** `npm test --prefix french-press-timer`
-- **Run with coverage:** `npm run test:coverage --prefix french-press-timer`
-- **Watch mode:** `npm run test:watch --prefix french-press-timer`
+- **Run all active tests:** `npm test --prefix app`
+- **Run with coverage:** `npm run test:coverage --prefix app`
+- **Watch mode:** `npm run test:watch --prefix app`
 
 Tests are disabled/enabled per GitHub issue to avoid noise from unimplemented features:
 - Issues #1-2 (Core timer and UI): ✅ Active
@@ -112,7 +114,7 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - **Deployment:**
   - Surge CLI installed and ready for deployment
   - Target domain: `brewer.surge.sh`
-  - Next step: `surge login` then `cd french-press-timer && surge . --domain brewer.surge.sh`
+  - Next step: `surge login` then `cd app && surge . --domain brewer.surge.sh`
 
 **Issue #14 - Mobile Responsive Design (IN PROGRESS):**
 - **Branch:** issue-14-mobile-responsive

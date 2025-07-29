@@ -799,6 +799,11 @@ header h1 {
     
     .modal-header {
         padding-top: 20px; /* Space for grab handle */
+        margin-bottom: 0.75rem; /* Reduce spacing */
+    }
+    
+    .modal-content {
+        padding: 1rem; /* Tighter padding on mobile */
     }
 }
 
@@ -958,11 +963,11 @@ header h1 {
 }
 
 .modal-body {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .setting-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-align: left;
 }
 
@@ -997,11 +1002,40 @@ header h1 {
 
 /* Checkbox styling */
 .setting-group input[type="checkbox"] {
-    width: auto;
+    width: 20px;
+    height: 20px;
     padding: 0;
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
     accent-color: #76946A; /* autumnGreen */
-    transform: scale(1.2);
+    cursor: pointer;
+    
+    /* Enhanced visibility */
+    border: 2px solid #6A9589; /* waveAqua1 */
+    border-radius: 4px;
+    background-color: #16161D; /* sumiInk0 */
+    
+    /* Better mobile touch target */
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+    transform: scale(1);
+}
+
+.setting-group input[type="checkbox"]:checked {
+    background-color: #76946A; /* autumnGreen */
+    border-color: #76946A;
+}
+
+.setting-group input[type="checkbox"]:focus {
+    outline: 2px solid #7E9CD8; /* crystalBlue */
+    outline-offset: 2px;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
 }
 
 /* Range slider styling */
@@ -1078,7 +1112,8 @@ header h1 {
 
 .modal-footer {
     display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
 }
 
