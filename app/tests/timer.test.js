@@ -193,8 +193,8 @@ describe('FrenchPressTimer', () => {
       timer.state.currentStage = 'stir';
       timer.updateDisplay();
       
-      expect(timer.stageTitle.textContent).toBe('Stir Coffee');
-      expect(timer.stageDescription.textContent).toBe('Give the coffee a gentle stir, then continue');
+      expect(timer.stageTitle.textContent).toBe('Stir Coffee Gently');
+      expect(timer.stageDescription.textContent).toBe('...then continue brewing');
     });
 
     test('should show correct stage information for brewing', () => {

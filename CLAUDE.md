@@ -70,8 +70,8 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
 - 🔄 Issue #7: Chrome/Firefox compatibility testing (READY)
 - ✅ Issue #8: Offline functionality optimization (COMPLETE - PWA manifest + font preloading)
 - 🔄 Issue #14: Mobile responsive design for iPhone and PWA support (IN PROGRESS)
-- 🔄 Issue #15: Musical arpeggio audio system and iOS compatibility (PENDING)
-- 🔄 Issue #16: 4K TV optimization and unified responsive grid system (PENDING)
+- ✅ Issue #15: Musical arpeggio audio system (COMPLETE - C major arpeggio for brewing completion)
+- 🔄 Issue #16: Unified responsive system with settings improvements (IN PROGRESS)
 
 **Issue #5 - Settings Enhancement (COMPLETE):**
 - **Branch:** issue-5-settings-enhancement (merged to main)
@@ -135,9 +135,32 @@ To enable tests for a specific issue, remove `.skip` from the relevant `describe
   - Systematic accessibility improvements (VoiceOver, dynamic type, reduced motion)
   - Cross-device performance optimization with device detection
 
-**Next Development Phase - Audio Enhancement & 4K Optimization:**
-- **Issue #15:** Replace beep audio with 1-3-5-1 arpeggio system, fix iOS audio compatibility
-- **Issue #16:** 4K TV optimization (4096x2160 at 300% scaling) and unified responsive grid
+**Issue #15 - Musical Arpeggio Audio System (COMPLETE):**
+- **Branch:** issue-15-musical-arpeggio-audio (merged to main)
+- **Completed Features:**
+  - ✅ Synthesized C major arpeggio (C-E-G-C) for brewing completion
+  - ✅ Reliable AudioContext-based sound generation  
+  - ✅ Zero external dependencies or file loading
+  - ✅ Cross-browser compatibility including mobile
+  - ✅ Volume control integration with existing settings
+  - ✅ Comprehensive error handling with graceful fallbacks
+- **Technical Implementation:**
+  - Simple, reliable synthesized audio using Web Audio API
+  - Distinct notification sounds for each timer event
+  - Musical arpeggio frequencies: 523Hz, 659Hz, 784Hz, 1047Hz (C-E-G-C)
+  - Production-ready with no file loading or CORS issues
+
+**Issue #16 - Unified Responsive System with Settings Improvements (IN PROGRESS):**
+- **Branch:** issue-16-unified-responsive-system
+- **Completed Features:**
+  - ✅ Settings modal UI improvements (stacked buttons, reduced spacing)
+  - ✅ Enhanced checkbox styling and shortened label text
+  - ✅ Responsive progress ring using viewBox instead of fixed dimensions
+  - ✅ Project structure reorganization (app/ directory)
+  - ✅ Combined with enhanced audio system from Issue #15
+- **Remaining Work:**
+  - 🔄 4K TV optimization (4096x2160 at 300% scaling)
+  - 🔄 Unified responsive grid system testing
 
 **Target Devices:**
 - iPhone 11 (390x844px) - PWA mode priority
