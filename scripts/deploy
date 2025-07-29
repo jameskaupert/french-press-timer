@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# French Press Timer - Deploy Script
+# Deploys the application to brewer.surge.sh
+
+set -e
+
+echo "🚀 Deploying French Press Timer to brewer.surge.sh..."
+
+# Change to app directory
+cd app
+
+# Deploy to Surge.sh
+surge . --domain brewer.surge.sh
+
+echo "✅ Deployment complete!"
+echo "🌐 Live at: https://brewer.surge.sh"
