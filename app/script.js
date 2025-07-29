@@ -425,7 +425,8 @@ class FrenchPressTimer {
                     this.playBeepSequence([400], [0.5], 0);
                     break;
                 case 'brewing_complete':
-                    this.playBeepSequence([600, 800, 1000], [0.2, 0.2, 0.4], 150);
+                    // Simple C major arpeggio: C-E-G-C (1-3-5-1)
+                    this.playBeepSequence([523, 659, 784, 1047], [0.4, 0.4, 0.4, 0.6], 100);
                     break;
                 default:
                     this.playBeepSequence([800], [0.3], 0);
@@ -524,6 +525,7 @@ class FrenchPressTimer {
             this.updateDisplay();
         }
     }
+
 }
 
 // Initialize the timer when the page loads

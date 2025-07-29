@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Deploy French Press Timer to surge.sh
+# Usage: ./scripts/deploy
+
+set -e
+
+echo "🚀 Deploying French Press Timer to brewer.surge.sh..."
+
+# Change to the app directory and deploy
+~/.local/share/mise/installs/node/24.4.1/bin/surge app --domain brewer.surge.sh
+
+echo "✅ Deployment complete! App is live at https://brewer.surge.sh"
